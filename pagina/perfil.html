@@ -214,6 +214,9 @@
         <p id="correoUsuario"></p>
         <p id="descripcionUsuario">Aún no has agregado información a tu perfil.</p>
       </div>
+      <h2>Mi progreso</h2>
+<p>🏆 Score total: <span id="scoreTotal">0</span></p>
+<p>📚 Actividades completadas: <span id="actividadesCompletadas">0</span></p>
 
       <div class="progresos" id="progresosContainer">
         <div>
@@ -290,6 +293,19 @@
 
     mostrarPerfil();
   </script>
+<script src="progreso.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const progreso = obtenerProgreso();
+
+  if (!progreso) return;
+
+  document.getElementById("scoreTotal").textContent = progreso.score;
+
+  document.getElementById("actividadesCompletadas").textContent =
+    Object.keys(progreso.actividades).length;
+});
+</script>
 </body>
 </html>
