@@ -1,86 +1,166 @@
-/* POOLINGO - Usuarios locales
-   Esta versión funciona sin internet ni servidor usando localStorage.
-   Más adelante se puede cambiar por Firebase para sincronizar en varios dispositivos.
-*/
-const PoolingoAuth = (() => {
-  const USERS_KEY = 'poolingo_usuarios';
-  const SESSION_KEY = 'poolingo_sesion';
+const firebaseConfig = {
+  apiKey: "AIzaSyCZLSdCoiCkonjLDs9ZUzJRbea3vnao3pY",
+  authDomain: "poolingo-ceab8.firebaseapp.com",
+  projectId: "poolingo-ceab8",
+  storageBucket: "poolingo-ceab8.firebasestorage.app",
+  messagingSenderId: "871540872636",
+  appId: "1:871540872636:web:ac9831bb112fbf5b8007b9"
+};
 
-  const getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-  const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  const getCurrentEmail = () => localStorage.getItem(SESSION_KEY);
-  const getCurrentUser = () => getUsers().find(user => user.email === getCurrentEmail()) || null;
+function cargarScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
 
-  function normalizeEmail(email) {
-    return String(email || '').trim().toLowerCase();
-  }
+const PoolingoAuth = {
+  usuarioActual: null,
 
-  function register({ nombre, email, password }) {
-    nombre = String(nombre || '').trim();
-    email = normalizeEmail(email);
-    password = String(password || '');
+  async iniciarFirebase() {
+    if (!window.firebase) {
+      await cargarScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
+      await cargarScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js");
+      await cargarScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js");
+    }
 
-    if (!nombre || !email || !password) throw new Error('Completa nombre, correo y contraseña.');
-    if (password.length < 6) throw new Error('La contraseña debe tener mínimo 6 caracteres.');
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
 
-    const users = getUsers();
-    if (users.some(user => user.email === email)) throw new Error('Ese correo ya tiene cuenta.');
+    this.auth = firebase.auth();
+    this.db = firebase.firestore();
 
-    const newUser = {
-      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
-      nombre,
+    this.auth.onAuthStateChanged(async user => {
+      if (user) {
+        this.usuarioActual = {
+          email: user.email,
+          nombre: user.displayName || user.email.split("@")[0]
+        };
+
+        localStorage.setItem("poolingo_sesion", user.email);
+
+        const span = document.querySelector("[data-poolingo-user]");
+        if (span) span.textContent = this.usuarioActual.nombre;
+      }
+    });
+  },
+
+  async registrar(email, password, nombre = "") {
+    await this.iniciarFirebase();
+
+    const cred = await this.auth.createUserWithEmailAndPassword(email, password);
+
+    await cred.user.updateProfile({
+      displayName: nombre || email.split("@")[0]
+    });
+
+    await this.db.collection("usuarios").doc(email).set({
       email,
-      password,
-      descripcion: '',
-      foto: '',
-      progreso: { unidad1: 0, unidad2: 0, unidad3: 0, skillPOO: 0 },
-      scoreTotal: 0,
-      creadoEn: new Date().toISOString()
+      nombre: nombre || email.split("@")[0],
+      creado: new Date().toISOString(),
+      progreso: {
+        score: 0,
+        actividades: {}
+      }
+    }, { merge: true });
+
+    localStorage.setItem("poolingo_sesion", email);
+    window.location.href = "menu.html";
+  },
+
+  async login(email, password) {
+    await this.iniciarFirebase();
+
+    await this.auth.signInWithEmailAndPassword(email, password);
+
+    localStorage.setItem("poolingo_sesion", email);
+    window.location.href = "menu.html";
+  },
+
+  async cerrarSesion() {
+    await this.iniciarFirebase();
+    await this.auth.signOut();
+    localStorage.removeItem("poolingo_sesion");
+    window.location.href = "inicio.html";
+  },
+
+  async requireSession() {
+    await this.iniciarFirebase();
+
+    this.auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "inicio.html";
+      }
+    });
+  },
+
+  getCurrentUser() {
+    const email = localStorage.getItem("poolingo_sesion");
+    if (!email) return null;
+
+    return {
+      email,
+      nombre: email.split("@")[0]
     };
+  },
 
-    users.push(newUser);
-    saveUsers(users);
-    localStorage.setItem(SESSION_KEY, email);
-    return newUser;
+  updateCurrentUser(datos) {
+    const email = localStorage.getItem("poolingo_sesion");
+    if (!email) return;
+
+    if (this.auth?.currentUser && datos.nombre) {
+      this.auth.currentUser.updateProfile({
+        displayName: datos.nombre
+      });
+    }
+
+    if (this.db) {
+      this.db.collection("usuarios").doc(email).set(datos, { merge: true });
+    }
   }
+};
 
-  function login({ email, password }) {
-    email = normalizeEmail(email);
-    password = String(password || '');
-    const user = getUsers().find(user => user.email === email && user.password === password);
-    if (!user) throw new Error('Correo o contraseña incorrectos.');
-    localStorage.setItem(SESSION_KEY, email);
-    return user;
-  }
-
-  function logout() {
-    localStorage.removeItem(SESSION_KEY);
-    window.location.href = 'Inicio.html';
-  }
-
-  function requireSession() {
-    if (!getCurrentUser()) window.location.href = 'Inicio.html';
-  }
-
-  function updateCurrentUser(changes) {
-    const current = getCurrentUser();
-    if (!current) throw new Error('No hay sesión activa.');
-    const users = getUsers().map(user => user.email === current.email ? { ...user, ...changes } : user);
-    saveUsers(users);
-    return getCurrentUser();
-  }
-
-  return { register, login, logout, requireSession, getCurrentUser, updateCurrentUser };
-})();
+window.PoolingoAuth = PoolingoAuth;
 
 function poolingoCerrarSesion() {
-  PoolingoAuth.logout();
+  PoolingoAuth.cerrarSesion();
 }
 
-function poolingoPintarUsuario() {
-  const user = PoolingoAuth.getCurrentUser();
-  const target = document.querySelector('[data-poolingo-user]');
-  if (target && user) target.textContent = user.nombre;
-}
+document.addEventListener("DOMContentLoaded", async () => {
+  await PoolingoAuth.iniciarFirebase();
 
-document.addEventListener('DOMContentLoaded', poolingoPintarUsuario);
+  const btnLogin = document.getElementById("btnLogin");
+  const btnRegistro = document.getElementById("btnRegistro");
+  const mensaje = document.getElementById("mensaje");
+
+  if (btnLogin) {
+    btnLogin.addEventListener("click", async () => {
+      try {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        await PoolingoAuth.login(email, password);
+      } catch (error) {
+        if (mensaje) mensaje.textContent = "Correo o contraseña incorrectos.";
+      }
+    });
+  }
+
+  if (btnRegistro) {
+    btnRegistro.addEventListener("click", async () => {
+      try {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const nombre = document.getElementById("nombre")?.value.trim() || "";
+
+        await PoolingoAuth.registrar(email, password, nombre);
+      } catch (error) {
+        if (mensaje) mensaje.textContent = "No se pudo crear la cuenta. Revisa el correo o contraseña.";
+      }
+    });
+  }
+});
