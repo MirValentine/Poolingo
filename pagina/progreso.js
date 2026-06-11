@@ -1,7 +1,12 @@
 function obtenerUsuarioActual() {
-  return JSON.parse(localStorage.getItem("poolingo_usuario_actual"));
-}
+  const email = localStorage.getItem("poolingo_sesion");
 
+  if (!email) return null;
+
+  return {
+    email: email
+  };
+}
 function obtenerProgreso() {
   const usuario = obtenerUsuarioActual();
   if (!usuario) return null;
