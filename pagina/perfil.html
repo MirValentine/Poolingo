@@ -296,15 +296,23 @@
 <script src="progreso.js"></script>
 
 <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const progreso = obtenerProgreso();
 
   if (!progreso) return;
 
-  document.getElementById("scoreTotal").textContent = progreso.score;
+  const score = progreso.score || 0;
+  const actividades = Object.keys(progreso.actividades || {}).length;
 
-  document.getElementById("actividadesCompletadas").textContent =
-    Object.keys(progreso.actividades).length;
+  document.getElementById("scoreTotal").textContent = score;
+  document.getElementById("actividadesCompletadas").textContent = actividades;
+
+  const totalUnidad1 = 145;
+  const porcentajeUnidad1 = Math.min(Math.round((score / totalUnidad1) * 100), 100);
+
+  pintarPorcentaje("circleUnidad1", "unidad1", porcentajeUnidad1);
+  pintarPorcentaje("circleSkill", "skill1", porcentajeUnidad1);
 });
 </script>
 </body>
