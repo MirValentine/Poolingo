@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Unidad 2: Relaciones - POOLINGO</title>
+  <style>
+    /* ------------------------------------------- */
+    /* --- ESTILOS GENERALES Y DE NAVEGACIÓN (CLASES.HTML BASE) --- */
+    /* ------------------------------------------- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    /* Barra de navegación (Header Fijo) */
+    header {
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Padding para que el contenido no quede bajo el header fijo */
+    body::before {
+        content: "";
+        display: block;
+        height: 80px;
+    }
+
+    header h1 {
+        color: #2d2d2d;
+        font-size: 1.8em;
+        margin: 0;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white; /* Color blanco para contraste con el gradiente */
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #222;
+    }
+    
+    /* Contenedor principal centrado (clases.html style) */
+    .contenedor { 
+        max-width: 900px; 
+        margin: 40px auto; 
+        padding: 0 15px; 
+    }
+
+    /* ------------------------------------------- */
+    /* --- ESTILOS DE CONTENIDO (TARJETA STYLE) --- */
+    /* ------------------------------------------- */
+    
+    /* Encabezado de la lección (como una tarjeta especial) */
+    .leccion-header {
+      background: white; border-radius: 12px; padding: 30px; text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; 
+      border-bottom: 5px solid #4CAF50; /* Mantiene el toque verde del diseño */
+    }
+    .leccion-header h2 { 
+        color: #4CAF50; /* Color principal de clases.html */
+        margin: 0; 
+        font-size: 2em; 
+    }
+
+    /* Tema (Ahora usa el estilo .tarjeta) */
+    .tema {
+      background: white; 
+      padding: 30px; 
+      margin-bottom: 30px; 
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra consistente */
+    }
+
+    /* Jerarquía de Títulos */
+    .tema h3 { 
+        color: #5555FF; /* Azul para el título de la sección */
+        border-left: 5px solid #74ebd5; 
+        padding-left: 15px; 
+        margin-top: 0; 
+    }
+    .tema h4 { 
+        color: #2e7d32; /* Verde oscuro para subsecciones */
+        margin-top: 25px; 
+        border-bottom: 1px solid #eee; 
+        padding-bottom: 5px; 
+    }
+    
+    /* Listas y textos enriquecidos */
+    .tema ul { line-height: 1.6; color: #444; }
+    .tema strong { color: #000; }
+
+    /* Nota Técnica (Estilo Callout) */
+    .nota-tecnica {
+      background-color: #fff3cd;
+      border-left: 5px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    .nota-tecnica strong { color: #856404; }
+
+    /* Tablas */
+    .tabla-info { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .tabla-info th, .tabla-info td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    .tabla-info th { background-color: #e8f5e9; color: #2e7d32; }
+
+    /* Imágenes */
+    .img-container { text-align: center; margin: 20px 0; padding: 10px; background: #fafafa; border-radius: 8px; }
+    .img-responsive { max-width: 100%; height: auto; display: inline-block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .caption { display: block; margin-top: 10px; color: #666; font-size: 0.9em; font-style: italic; }
+    
+    /* ------------------------------------- */
+    /* --- ESTILOS PARA ACTIVIDADES Y BOTONES --- */
+    /* ------------------------------------- */
+    
+    /* Contenedor de la actividad (Look más limpio) */
+    .actividad-box {
+      background: #f8f8ff; 
+      border: 1px solid #ACBCD5; 
+      padding: 25px; 
+      border-radius: 10px; 
+      margin: 30px 0;
+      box-shadow: inset 0 0 8px rgba(33, 150, 243, 0.1); 
+    }
+    .actividad-box h4 { margin-top: 0; color: #1565C0; border-bottom: none; }
+    .pregunta { margin-bottom: 15px; }
+    
+    /* Opciones de radio */
+    .opciones label { 
+        display: block; 
+        margin: 10px 0; 
+        cursor: pointer; 
+        background: white; 
+        padding: 10px; 
+        border-radius: 8px; 
+        border: 1px solid #eee;
+        transition: all 0.2s; 
+    }
+    .opciones label:hover { 
+        background: #f1f8ff; 
+        border-color: #2196F3;
+    }
+    
+    /* Botón Verificar (Estilo gradiente) */
+    .btn-verificar {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5); 
+        color: #2d2d2d;
+        font-weight: bold;
+        font-size: 1.0em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        margin-top: 15px; 
+    }
+    .btn-verificar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        opacity: 0.9;
+    }
+    
+    /* Mensajes de Resultado */
+    .mensaje-resultado { 
+      margin-top: 15px; 
+      font-weight: bold; 
+      display: none; 
+      padding: 15px; 
+      border-radius: 10px; 
+      text-align: center;
+    }
+    .correcto { background-color: #dcedc8; color: #2e7d32; display: block; }
+    .incorrecto { background-color: #ffcdd2; color: #c62828; display: block; }
+
+    /* --- NAVEGACIÓN INFERIOR --- */
+    .nav-bottom { display: flex; justify-content: space-between; margin-top: 50px; align-items: center; }
+    
+    /* Botón de navegación (Volver) */
+    .btn-nav { 
+        color: #555;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 15px;
+        border: 2px solid #ACBCD5;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+    .btn-nav:hover {
+        background: #eee;
+    }
+    
+    /* Botón Siguiente (Activo/Inactivo) */
+    #btn-siguiente-tema {
+      background: gray; 
+      color: white; 
+      padding: 15px 30px; 
+      border-radius: 50px; 
+      text-decoration: none; 
+      font-weight: bold;
+      pointer-events: none; 
+      opacity: 0.5; 
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    #btn-siguiente-tema.activo {
+      background: linear-gradient(90deg, #4CAF50, #8BC34A); 
+      pointer-events: auto; 
+      opacity: 1; 
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    footer { 
+        margin-top: 50px; 
+        padding: 20px; 
+        text-align: center; 
+        background: #333; 
+        color: white; 
+        font-size: 0.9em; 
+    }
+  
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>POOLINGO</h1>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Inicio</a></li>
+        <li><a href="clases.html">Unidad 1</a></li>
+        <li><a href="unidad2.html">Unidad 2</a></li>
+        <li><a href="U3.html">Unidad 3</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+    </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+  </header>
+
+  <div class="contenedor">
+    
+    <section class="leccion-header">
+      <h2>Unidad 2: Modelado y Diseño</h2>
+      <p>Parte 2: Relaciones entre Clases (Cómo se conectan)</p>
+    </section>
+
+    <section class="tema">
+      <h3>3. Asociación: La Relación de Pertenencia</h3>
+      <p>Una <strong>Asociación</strong> es la relación más común y general. Indica que dos clases están ligadas y que una conoce a la otra. Se representa típicamente cuando una clase tiene un **atributo** cuyo tipo de dato es otra clase.</p>
+      
+      <h4>Tipos de Asociaciones</h4>
+      <p>La flecha solo indica que una clase conoce a la otra. Podemos especificar el tipo de conexión:</p>
+      <ul>
+        <li><strong>Agregación (Rombo hueco ◊):</strong> Representa una relación **"Tiene un"** débil. La parte (el objeto dentro) puede existir independientemente del todo. Por ejemplo: Un `Departamento` tiene muchos `Empleados`. Si el departamento se disuelve, los empleados siguen existiendo.</li>
+        <li><strong>Composición (Rombo relleno ◆):</strong> Representa una relación **"Es parte de"** fuerte. La parte no puede existir sin el todo. Por ejemplo: Un `Coche` tiene un `Motor`. Si el coche se destruye, el motor deja de tener sentido en ese contexto y generalmente también es destruido.</li>
+      </ul>
+
+      <div class="nota-tecnica">
+        <strong>💡 Multiplicidad (Cardinalidad):</strong> Los números y símbolos cerca de la línea (ej. <code>1..*</code>, <code>0..1</code>, <code>1</code>) indican cuántos objetos de una clase se relacionan con cuántos de la otra. 
+      </div>
+
+      <table class="tabla-info">
+        <tr>
+          <th>Símbolo</th>
+          <th>Significado</th>
+          <th>Ejemplo</th>
+        </tr>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>Exactamente uno</td>
+          <td>Una persona tiene **1** pasaporte.</td>
+        </tr>
+        <tr>
+          <td><strong>*</strong></td>
+          <td>Cero a muchos</td>
+          <td>Un cliente puede tener **\*** (cero o muchas) órdenes.</td>
+        </tr>
+        <tr>
+          <td><strong>1..*</strong></td>
+          <td>Uno a muchos (Al menos uno)</td>
+          <td>Una clase tiene **1..\*** (al menos un) atributo.</td>
+        </tr>
+      </table>
+
+      <div class="img-container">
+        <img src="Diagrama de asociaciones.png" alt="Diagrama UML de Agregación y Composición" class="img-responsive">
+        <span class="caption">Agregación (◊) vs. Composición (◆).</span>
+      </div> 
+    </section>
+
+    <div class="actividad-box" id="act-relaciones">
+      <h4>🧠 Actividad 1: Reconocimiento de Relaciones</h4>
+      
+      <div class="pregunta">
+        <p><strong>1. Si la clase `A` declara un atributo `private B objetoB;`, ¿qué relación UML representa esto?</strong></p>
+        <div class="opciones">
+          <label><input type="radio" name="p1" value="correcto"> Una Asociación (Agregación o Composición) entre A y B.</label>
+          <label><input type="radio" name="p1" value="incorrecto"> Herencia, ya que A usa un objeto de B.</label>
+          <label><input type="radio" name="p1" value="incorrecto"> Dependencia, ya que A requiere un objeto B permanentemente.</label>
+        </div>
+      </div>
+
+      <button class="btn-verificar" onclick="verificarActividad1()">Verificar Respuesta</button>
+      <div id="res-act1" class="mensaje-resultado"></div>
+    </div>
+
+    <section class="tema" id="herencia">
+      <h3>4. Herencia e Implementación</h3>
+      <p>Estas son relaciones verticales que definen jerarquías.</p>
+
+      <h4>Herencia (Generalización)</h4>
+      <p>Indica una relación **"Es un"**. Se representa con una flecha con una punta de triángulo blanco (cerrado) apuntando a la clase base (superclase).</p>
+      <ul>
+        <li>Una clase `Perro` **Es un** `Animal`.</li>
+        <li>La clase `Perro` hereda todos los atributos y métodos públicos/protegidos de `Animal`.</li>
+      </ul>
+
+      <h4>Implementación (Realización)</h4>
+      <p>Indica que una clase concreta implementa los métodos definidos en una <strong>Interfaz</strong>. Se representa con una flecha punteada con punta de triángulo blanco (cerrado).</p>
+      <ul>
+        <li>La clase `Coche` **Implementa** la Interfaz `Vehiculo`.</li>
+        <li>Las interfaces se escriben en cursiva y suelen llevar el estereotipo <code>«interface»</code> en UML.</li>
+      </ul>
+    </section>
+
+    <div class="actividad-box" id="act-herencia">
+      <h4>🧠 Actividad 2: Diagramando Comportamiento Temporal</h4>
+      
+      <div class="pregunta">
+        <p><strong>2. Un `Estudiante` usa temporalmente una `Impresora` de la universidad para un trabajo. ¿Qué relación UML es la más apropiada?</strong></p>
+        <div class="opciones">
+          <label><input type="radio" name="p2" value="incorrecto"> Agregación (El estudiante "Tiene" una impresora).</label>
+          <label><input type="radio" name="p2" value="correcto"> Dependencia (Solo existe cuando el estudiante usa la impresora).</label>
+          <label><input type="radio" name="p2" value="incorrecto"> Herencia (El estudiante "Es una" impresora).</label>
+        </div>
+      </div>
+
+      <button class="btn-verificar" onclick="verificarActividad2()">Verificar Respuesta</button>
+      <div id="res-act2" class="mensaje-resultado"></div>
+    </div>
+
+    <div class="nav-bottom">
+      <a href="unidad2.html" class="btn-nav btn-prev">← Volver a Diagramas</a>
+      
+      <a href="unidad2_mensajes.html" id="btn-siguiente-tema">
+        Siguiente Tema: Mensajes y Cohesión →
+      </a>
+    </div>
+    <p style="text-align:center; color:#666; font-size:0.8em;">*Completa correctamente las actividades para desbloquear el siguiente tema.</p>
+
+  </div>
+
+  <footer>
+    © 2025 POOLINGO - Todos los derechos reservados
+  </footer>
+
+  <script>
+    // Variables de estado
+    let act1Completada = false;
+    let act2Completada = false;
+
+    function verificarProgreso() {
+      const btn = document.getElementById('btn-siguiente-tema');
+      if (act1Completada && act2Completada) {
+        btn.classList.add('activo');
+        btn.innerHTML = "¡Excelente! Ir al Siguiente Tema →";
+      }
+    }
+
+    function verificarActividad1() {
+      const opciones = document.getElementsByName('p1');
+      let seleccionado = null;
+      const resultadoDiv = document.getElementById('res-act1');
+
+      for(let op of opciones) { if(op.checked) seleccionado = op.value; }
+
+      if(!seleccionado) { alert("Selecciona una opción."); return; }
+      
+      resultadoDiv.className = 'mensaje-resultado';
+      if(seleccionado === 'correcto') {
+        resultadoDiv.classList.add('correcto');
+        resultadoDiv.innerHTML = "¡Correcto! Si es un atributo, es una relación estructural (Asociación).";
+        act1Completada = true;
+        verificarProgreso();
+      } else {
+        resultadoDiv.classList.add('incorrecto');
+        resultadoDiv.innerHTML = "Incorrecto. Recuerda: 'Tiene un' es permanente. Piénsalo como partes de un todo.";
+        act1Completada = false;
+      }
+    }
+
+    function verificarActividad2() {
+      const opciones = document.getElementsByName('p2');
+      let seleccionado = null;
+      const resultadoDiv = document.getElementById('res-act2');
+
+      for(let op of opciones) { if(op.checked) seleccionado = op.value; }
+
+      if(!seleccionado) { alert("Selecciona una opción."); return; }
+      
+      resultadoDiv.className = 'mensaje-resultado';
+      if(seleccionado === 'correcto') {
+        resultadoDiv.classList.add('correcto');
+        resultadoDiv.innerHTML = "¡Exacto! El estudiante no 'tiene' la impresora, solo la usa momentáneamente.";
+        act2Completada = true;
+        verificarProgreso();
+      } else {
+        resultadoDiv.classList.add('incorrecto');
+        resultadoDiv.innerHTML = "Piénsalo otra vez. La Dependencia es cuando la relación es temporal o de muy corto plazo (como un método).";
+        act2Completada = false;
+      }
+    }
+  </script>
+
+
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+
+</body>
+</html>

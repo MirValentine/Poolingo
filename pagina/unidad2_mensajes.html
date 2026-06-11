@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Unidad 2: Objetos y Mensajes - POOLINGO</title>
+  <style>
+    /* ------------------------------------------- */
+    /* --- ESTILOS GENERALES Y DE NAVEGACIÓN (CLASES.HTML BASE) --- */
+    /* ------------------------------------------- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    /* Barra de navegación (Header Fijo) */
+    header {
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Padding para que el contenido no quede bajo el header fijo */
+    body::before {
+        content: "";
+        display: block;
+        height: 80px;
+    }
+
+    header h1 {
+        color: #2d2d2d;
+        font-size: 1.8em;
+        margin: 0;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white; /* Color blanco para contraste con el gradiente */
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #222;
+    }
+    
+    /* Contenedor principal centrado (clases.html style) */
+    .contenedor { 
+        max-width: 900px; 
+        margin: 40px auto; 
+        padding: 0 15px; 
+    }
+
+    /* ------------------------------------------- */
+    /* --- ESTILOS DE CONTENIDO (TARJETA STYLE) --- */
+    /* ------------------------------------------- */
+    
+    /* Encabezado de la lección (como una tarjeta especial) */
+    .leccion-header {
+      background: white; border-radius: 12px; padding: 30px; text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; 
+      border-bottom: 5px solid #4CAF50; /* Mantiene el toque verde del diseño */
+    }
+    .leccion-header h2 { 
+        color: #4CAF50; /* Color principal de clases.html */
+        margin: 0; 
+        font-size: 2em; 
+    }
+
+    /* Tema (Ahora usa el estilo .tarjeta) */
+    .tema {
+      background: white; 
+      padding: 30px; 
+      margin-bottom: 30px; 
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra consistente */
+    }
+
+    /* Jerarquía de Títulos */
+    .tema h3 { 
+        color: #5555FF; /* Azul para el título de la sección */
+        border-left: 5px solid #74ebd5; 
+        padding-left: 15px; 
+        margin-top: 0; 
+    }
+    .tema h4 { 
+        color: #2e7d32; /* Verde oscuro para subsecciones */
+        margin-top: 25px; 
+        border-bottom: 1px solid #eee; 
+        padding-bottom: 5px; 
+    }
+    
+    /* Listas y textos enriquecidos */
+    .tema ul { line-height: 1.6; color: #444; }
+    .tema strong { color: #000; }
+
+    /* Nota Técnica (Estilo Callout) */
+    .nota-tecnica {
+      background-color: #fff3cd;
+      border-left: 5px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    .nota-tecnica strong { color: #856404; }
+
+    /* Estilo de código inline */
+    code {
+        background: #eee;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    /* ------------------------------------- */
+    /* --- ESTILOS PARA ACTIVIDADES Y BOTONES --- */
+    /* ------------------------------------- */
+    
+    /* Contenedor de la actividad (Look más limpio) */
+    .actividad-box {
+      background: #f8f8ff; 
+      border: 1px solid #ACBCD5; 
+      padding: 25px; 
+      border-radius: 10px; 
+      margin: 30px 0;
+      box-shadow: inset 0 0 8px rgba(33, 150, 243, 0.1); 
+    }
+    .actividad-box h4 { margin-top: 0; color: #1565C0; border-bottom: none; }
+    .pregunta { margin-bottom: 15px; }
+    
+    /* Opciones de radio */
+    .opciones label { 
+        display: block; 
+        margin: 10px 0; 
+        cursor: pointer; 
+        background: white; 
+        padding: 10px; 
+        border-radius: 8px; 
+        border: 1px solid #eee;
+        transition: all 0.2s; 
+    }
+    .opciones label:hover { 
+        background: #f1f8ff; 
+        border-color: #2196F3;
+    }
+    
+    /* Botón Verificar (Estilo gradiente) */
+    .btn-verificar {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5); 
+        color: #2d2d2d;
+        font-weight: bold;
+        font-size: 1.0em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        margin-top: 15px; 
+    }
+    .btn-verificar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        opacity: 0.9;
+    }
+    
+    /* Mensajes de Resultado */
+    .mensaje-resultado { 
+      margin-top: 15px; 
+      font-weight: bold; 
+      display: none; 
+      padding: 15px; 
+      border-radius: 10px; 
+      text-align: center;
+    }
+    .correcto { background-color: #dcedc8; color: #2e7d32; display: block; }
+    .incorrecto { background-color: #ffcdd2; color: #c62828; display: block; }
+
+    /* --- NAVEGACIÓN INFERIOR --- */
+    .nav-bottom { display: flex; justify-content: space-between; margin-top: 50px; align-items: center; }
+    
+    /* Botón de navegación (Volver) */
+    .btn-nav { 
+        color: #555;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 15px;
+        border: 2px solid #ACBCD5;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+    .btn-nav:hover {
+        background: #eee;
+    }
+    
+    /* Botón Siguiente (Activo/Inactivo) */
+    #btn-siguiente-tema {
+      background: gray; 
+      color: white; 
+      padding: 15px 30px; 
+      border-radius: 50px; 
+      text-decoration: none; 
+      font-weight: bold;
+      pointer-events: none; 
+      opacity: 0.5; 
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    #btn-siguiente-tema.activo {
+      background: linear-gradient(90deg, #4CAF50, #8BC34A); 
+      pointer-events: auto; 
+      opacity: 1; 
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    footer { 
+        margin-top: 50px; 
+        padding: 20px; 
+        text-align: center; 
+        background: #333; 
+        color: white; 
+        font-size: 0.9em; 
+    }
+  
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>POOLINGO</h1>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Inicio</a></li>
+        <li><a href="clases.html">Unidad 1</a></li>
+        <li><a href="unidad2.html">Unidad 2</a></li>
+        <li><a href="U3.html">Unidad 3</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+    </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+  </header>
+
+  <div class="contenedor">
+    
+    <section class="leccion-header">
+      <h2>Unidad 2: Modelado y Diseño</h2>
+      <p>Parte 3: Mensajes, Cohesión y Acoplamiento (Calidad del Diseño)</p>
+    </section>
+
+    <section class="tema">
+      <h3>5. Mensajes: El Motor de la POO</h3>
+      <p>Un **mensaje** es cómo los objetos se comunican entre sí. En código, enviar un mensaje es simplemente **llamar a un método** de otro objeto.</p>
+      
+      <h4>Estructura de un Mensaje</h4>
+      <p>La estructura básica es: <code>objeto.metodo(parametro)</code>.</p>
+      <ul>
+        <li>**Receptor:** Es el objeto que va a realizar la acción (<code>objeto</code>).</li>
+        <li>**Mensaje (Método):** Es la acción que se solicita (<code>metodo</code>).</li>
+        <li>**Argumento (Parámetro):** Es la información necesaria para realizar la acción (<code>parametro</code>).</li>
+      </ul>
+      
+      <div class="nota-tecnica">
+        <strong>Ejemplo:</strong> <code>cajafuerte.validarPin(1234)</code>. El objeto `cajafuerte` recibe el mensaje `validarPin` con el argumento `1234`.
+      </div>
+    </section>
+
+    <div class="actividad-box" id="act-mensajes">
+      <h4>🧠 Actividad 1: Reconocimiento del Receptor</h4>
+      
+      <div class="pregunta">
+        <p><strong>1. En el código `cliente.consultarSaldo()`, ¿cuál es el objeto receptor del mensaje?</strong></p>
+        <div class="opciones">
+          <label><input type="radio" name="p1" value="incorrecto"> `consultarSaldo`</label>
+          <label><input type="radio" name="p1" value="correcto"> `cliente`</label>
+          <label><input type="radio" name="p1" value="incorrecto"> No hay receptor, solo un mensaje.</label>
+        </div>
+      </div>
+
+      <button class="btn-verificar" onclick="verificarActividad1()">Verificar Respuesta</button>
+      <div id="res-act1" class="mensaje-resultado"></div>
+    </div>
+
+    <section class="tema" id="cohesion-acoplamiento">
+      <h3>6. Cohesión y Acoplamiento</h3>
+      <p>Estos conceptos miden la calidad del diseño de un sistema orientado a objetos. **Un buen diseño siempre busca Alta Cohesión y Bajo Acoplamiento.**</p>
+
+      <h4>Cohesión (Cohesion)</h4>
+      <p>Mide qué tan bien enfocados y relacionados están los elementos internos de una clase. Es el grado en que los métodos y atributos de una clase sirven para un único propósito bien definido.</p>
+      <ul>
+        <li>**Alta Cohesión (Buena):** Una clase se dedica a una sola tarea (ej. la clase `Producto` solo maneja datos del producto, su precio, y métodos para cambiar su precio).</li>
+        <li>**Baja Cohesión (Mala):** Una clase intenta hacer demasiadas cosas (ej. la clase `Producto` también calcula el inventario global y genera facturas).</li>
+      </ul>
+
+      <h4>Acoplamiento (Coupling)</h4>
+      <p>Mide qué tan dependiente es una clase de otra. Es el grado en que los cambios en una clase fuerzan a hacer cambios en otra.</p>
+      <ul>
+        <li>**Bajo Acoplamiento (Bueno):** Las clases son independientes. Si una clase `Carrito` cambia, no afecta a la clase `Producto`.</li>
+        <li>**Alto Acoplamiento (Malo):** Las clases están fuertemente entrelazadas. Si la clase `A` accede a los atributos privados de la clase `B`, están altamente acopladas.</li>
+      </ul>
+
+    </section>
+
+    <div class="actividad-box" id="act-calidad">
+      <h4>🧠 Actividad 2: Principios de Diseño</h4>
+      
+      <div class="pregunta">
+        <p><strong>2. ¿Cuál de estas situaciones genera ALTA COHESIÓN?</strong></p>
+        <div class="opciones">
+          <label><input type="radio" name="p2" value="correcto"> La clase `Producto` tiene un método `calcularIVA()` que solo usa su atributo `precioBase`.</label>
+          <label><input type="radio" name="p2" value="incorrecto"> La clase `Carrito` accede directamente a la variable `stock` de la clase `Inventario` para saber si puede agregar un producto.</label>
+          <label><input type="radio" name="p2" value="incorrecto"> Una clase llamada `Utilidades` tiene métodos para manejar la base de datos, imprimir reportes y validar contraseñas.</label>
+        </div>
+      </div>
+
+      <button class="btn-verificar" onclick="verificarActividad2()">Verificar Respuesta</button>
+      <div id="res-act2" class="mensaje-resultado"></div>
+    </div>
+
+    <div class="nav-bottom">
+      <a href="unidad2_relaciones.html" class="btn-nav btn-prev">← Volver a Relaciones</a>
+      
+      <a href="U3.html" id="btn-siguiente-tema">
+        Unidad 2 Completa. ¡Finalizar! →
+      </a>
+    </div>
+    <p style="text-align:center; color:#666; font-size:0.8em;">*Completa correctamente las actividades para desbloquear la finalización de la unidad.</p>
+
+  </div>
+
+  <footer>
+    © 2025 POOLINGO - Todos los derechos reservados
+  </footer>
+
+  <script>
+    // Variables de estado
+    let act1Completada = false;
+    let act2Completada = false;
+
+    function verificarProgreso() {
+      const btn = document.getElementById('btn-siguiente-tema');
+      if (act1Completada && act2Completada) {
+        btn.classList.add('activo');
+        btn.innerHTML = "Unidad 2 Completa. ¡Finalizar! →";
+        btn.href = "U3.html"; // Se asume que aquí iría el enlace a la siguiente unidad o al menú final
+      }
+    }
+
+    function verificarActividad1() {
+      const opciones = document.getElementsByName('p1');
+      let seleccionado = null;
+      const resultadoDiv = document.getElementById('res-act1');
+
+      for(let op of opciones) { if(op.checked) seleccionado = op.value; }
+
+      if(!seleccionado) { alert("Selecciona una opción."); return; }
+      
+      resultadoDiv.className = 'mensaje-resultado';
+      if(seleccionado === 'correcto') {
+        resultadoDiv.classList.add('correcto');
+        resultadoDiv.innerHTML = "¡Correcto! El objeto antes del punto (.) es quien recibe el mensaje.";
+        act1Completada = true;
+        verificarProgreso();
+      } else {
+        resultadoDiv.classList.add('incorrecto');
+        resultadoDiv.innerHTML = "Incorrecto. 'consultarSaldo' es el mensaje (método) y 'cliente' es el receptor.";
+        act1Completada = false;
+      }
+    }
+
+    function verificarActividad2() {
+      const opciones = document.getElementsByName('p2');
+      let seleccionado = null;
+      const resultadoDiv = document.getElementById('res-act2');
+
+      for(let op of opciones) { if(op.checked) seleccionado = op.value; }
+
+      if(!seleccionado) { alert("Selecciona una opción."); return; }
+      
+      resultadoDiv.className = 'mensaje-resultado';
+      if(seleccionado === 'correcto') {
+        resultadoDiv.classList.add('correcto');
+        resultadoDiv.innerHTML = "¡Exacto! Alta Cohesión: El producto manipula su propia información sin depender de otros.";
+        act2Completada = true;
+        verificarProgreso();
+      } else {
+        resultadoDiv.classList.add('incorrecto');
+        resultadoDiv.innerHTML = "Incorrecto. Los otros dos ejemplos muestran Cohesión Baja y Acoplamiento Alto.";
+        act2Completada = false;
+      }
+    }
+  </script>
+
+
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+
+</body>
+</html>

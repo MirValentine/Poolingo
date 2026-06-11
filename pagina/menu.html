@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú - POOLINGO</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Barra de navegación */
+    header {
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      color: #2d2d2d;
+      font-size: 1.8em;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    /* Contenedor principal */
+    .contenedor {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Cuadro de bienvenida */
+    .bienvenida {
+      background: linear-gradient(90deg, #b7e1f7, #d8c7f9);
+      color: #2d2d2d;
+      border-radius: 15px;
+      padding: 35px;
+      margin-bottom: 40px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    .bienvenida h2 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .bienvenida p {
+      font-size: 1.1em;
+      margin: 0;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tarjetas */
+    .tarjetas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+
+    .tarjeta {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-5px);
+    }
+
+    .tarjeta img {
+      width: 60px;
+      margin-bottom: 15px;
+    }
+
+    .tarjeta h3 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .tarjeta p {
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .tarjeta ul {
+      list-style: disc;
+      text-align: left;
+      margin: 10px 25px;
+      color: #555;
+    }
+
+    /* Sección extra */
+    .descripcion {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .descripcion div {
+      flex: 1;
+    }
+
+    .descripcion h2 {
+      color: #4CAF50;
+      margin-bottom: 15px;
+    }
+
+    .descripcion img {
+      width: 200px;
+    }
+
+    /* Sección Ejemplo en la vida real */
+    .ejemplo {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 50px;
+    }
+
+    .ejemplo h2 {
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+
+    .ejemplo .bloque {
+      border-left: 6px solid #4CAF50;
+      background: #fafafa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .ejemplo strong {
+      color: #2e7d32;
+    }
+
+    .ejemplo ul {
+      list-style: disc;
+      margin-left: 40px;
+      margin-bottom: 15px;
+    }
+
+    .ejemplo p {
+      margin: 8px 0;
+    }
+
+    /* Conclusión */
+    .conclusion {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 50px;
+    }
+
+    .conclusion h2 {
+      color: #4CAF50;
+      margin-bottom: 15px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      text-align: center;
+      background: #333;
+      color: white;
+      font-size: 0.9em;
+    }
+
+    /* Botón flotante */
+    .btn-iniciar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 25px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      z-index: 10000;
+    }
+
+    .btn-iniciar:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    /* 🔽 Barra de progreso 🔽 */
+    #progress-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(0,0,0,0.1);
+      z-index: 9999;
+    }
+
+    #progress-bar {
+      height: 6px;
+      width: 0%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 0.1s ease;
+    }
+  
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <h1>POOLINGO</h1>
+    <nav>
+      <ul>
+        <li><a href="Inicio.html">Inicio</a></li>
+        <li><a href="clases.html">Unidad 1</a></li>
+        <li><a href="unidad2.html">Unidad 2</a></li>
+        <li><a href="U3.html">Unidad 3</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+    </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="contenedor">
+
+    <!-- 🟩 Sección de bienvenida -->
+    <section class="bienvenida">
+      <h2>¡Bienvenido al curso de Programación Orientada a Objetos con Java! </h2>
+      <p>Nos alegra mucho que formes parte de este curso. Esperamos que disfrutes aprendiendo Java de una forma <strong>práctica, didáctica y divertida</strong>.  
+      A lo largo de las unidades conocerás los fundamentos de la programación, el diseño orientado a objetos y la implementación de soluciones completas.</p>
+      <p>Prepárate para desarrollar tus primeros programas y descubrir el potencial de pensar como un programador. </p>
+  </section>
+
+    <!-- Tarjetas -->
+    <section class="tarjetas">
+      <div class="tarjeta">
+        <img src="progreso.PNG" alt="Progreso" class="icon">
+        <h3>Progreso</h3>
+        <p>Aquí podrás observar lo aprendido en este curso</p>
+      </div>
+      <div class="tarjeta">
+        <img src="fundamentos.PNG" alt="Fundamentos de la programación" class="icon">
+        <h3>Unidad 1</h3>
+        <p><strong>Los alumnos deben poder:</strong></p>
+        <ul>
+          <li>Crear una clase básica con atributos y métodos.</li>
+          <li>Entender la diferencia entre público y privado.</li>
+          <li>Usar if y for dentro de métodos.</li>
+          <li>Relacionar cada clase con ejemplos del mundo real.</li>
+        </ul>
+      </div>
+      <div class="tarjeta">
+        <img src="modelado.PNG" alt="Modelado y diseño" class="icon">
+        <h3>Unidad 2</h3>
+        <p><strong>Los alumnos deben poder:</strong></p>
+        <ul>
+          <li>Elaborar diagramas UML de clases y secuencia.</li>
+          <li>Representar relaciones entre objetos.</li>
+          <li>Diseñar métodos y comunicación entre clases.</li>
+          <li>Convertir diagramas UML en código Java.</li>
+        </ul>
+      </div>
+      <div class="tarjeta">
+        <img src="modelado2.PNG" alt="Modelado y diseño avanzado" class="icon">
+        <h3>Unidad 3</h3>
+        <p><strong>Los alumnos deben poder:</strong></p>
+        <ul>
+          <li>Implementar programas completos en Java.</li>
+          <li>Usar arreglos y colecciones dinámicas.</li>
+          <li>Aplicar iteradores para recorrer datos.</li>
+          <li>Probar y documentar métodos con JavaDoc.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Descripción del curso -->
+    <section class="descripcion">
+      <div>
+        <h2>Objetivo del curso</h2>
+        <p>El objetivo de este curso es proporcionar a los estudiantes de nuevo ingreso de la carrera de Ingeniería en Computación una <strong>base teórica y práctica sólida</strong> en la <strong>Programación Orientada a Objetos (POO).</strong></p>
+        <p>A través de una <strong>metodología dinámica e interactiva</strong> (con ejemplos prácticos y ejercicios en código), el estudiante será capaz de <strong>comprender y aplicar los conceptos fundamentales</strong> (clases, objetos, herencia, encapsulamiento y polimorfismo) para <strong>analizar, diseñar e implementar soluciones de software modulares</strong> y eficientes, alineándose con el temario inicial de la carrera de ICO.</p>
+        <h2>¿Qué es la Programación Orientada a Objetos?</h2>
+        <p>La <strong>Programación Orientada a Objetos (POO)</strong> organiza el software en <strong>objetos</strong> que combinan <strong>datos (atributos)</strong> y <strong>funciones (métodos)</strong>. Esto permite representar elementos del mundo real, facilita la <strong>reutilización del código</strong>, mejora la <strong>modularidad</strong> y simplifica el <strong>mantenimiento</strong>.</p>
+        <p>Sus principales características son: <strong>abstracción</strong>, <strong>herencia</strong>, <strong>polimorfismo</strong> y <strong>encapsulamiento</strong>. Gracias a esto, la POO es muy usada en proyectos grandes por su claridad y organización.</p>
+      </div>
+      <img src="https://img.icons8.com/ios-filled/200/4CAF50/source-code.png" alt="POO">
+    </section>
+
+    <!-- Unidades del curso -->
+    <section class="ejemplo">
+      <h2>Unidades del curso</h2>
+      <div class="bloque">
+        <p><strong>Unidad 1</strong></p>
+        <ul>
+          <li>Tipos de datos: constantes, variables y operaciones básicas</li>
+          <li>Clases y objetos: atributos, métodos y encapsulación</li>
+          <li>Estructuras de control (secuencia, selección e iteración)</li>
+        </ul>
+
+        <p><strong>Unidad 2</strong></p>
+        <ul>
+          <li>Diagramas UML: clases y secuencia</li>
+          <li>Relaciones entre objetos: asociación y dependencia</li>
+          <li>Diseño de métodos y objetos con mensajes</li>
+        </ul>
+
+        <p><strong>Unidad 3</strong></p>
+        <ul>
+          <li>Programas con estructuras de control</li>
+          <li>Arreglos unidimensionales y bidimensionales</li>
+          <li>Iteradores y colecciones para arreglos dinámicos</li>
+          <li>Pruebas de métodos y documentación básica</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Conclusión 
+    <section class="conclusion">
+      <h2>Conclusión</h2>
+      <p>Los objetos permiten aplicar en la práctica los conceptos definidos en las clases. Cada objeto puede tener sus propios valores en los atributos, pero comparte los métodos que se definen dentro de la clase. Esto facilita la organización del código y el modelado de situaciones reales en la programación.</p>
+    </section>
+  </div>-->
+
+  <!-- Footer -->
+  <footer>
+    © 2025 POOLINGO - Todos los derechos reservados
+  </footer>
+
+  <!-- Botón Iniciar Curso -->
+  <a href="clases.html" class="btn-iniciar">Iniciar curso</a>
+
+  <!-- Barra de progreso -->
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- Script de progreso -->
+  <script>
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById("progress-bar").style.width = scrollPercent + "%";
+    });
+  </script>
+
+
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+
+</body>
+</html>

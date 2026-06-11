@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POOLINGO - Iniciar sesión</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      padding: 24px;
+      color: #2d2d2d;
+    }
+    .login-card {
+      width: min(940px, 100%);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 28px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .hero {
+      padding: 52px;
+      background: linear-gradient(160deg, rgba(76,175,80,0.18), rgba(116,235,213,0.55));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero h1 { font-size: 3.2rem; margin: 0 0 14px; letter-spacing: 1px; }
+    .hero p { font-size: 1.08rem; line-height: 1.6; margin: 0; }
+    .panel { padding: 42px; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 22px; }
+    .tab {
+      flex: 1;
+      border: 0;
+      padding: 12px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #edf0f7;
+      color: #555;
+    }
+    .tab.active { background: #333; color: white; }
+    form { display: none; }
+    form.active { display: block; }
+    label { display: block; font-weight: bold; margin: 14px 0 7px; }
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d9dce5;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus { border-color: #4CAF50; box-shadow: 0 0 0 3px rgba(76,175,80,0.16); }
+    .boton {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      font-size: 1.05em;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #333, #555);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+    .boton:hover { transform: translateY(-2px); }
+    #mensaje {
+      min-height: 24px;
+      margin-top: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+      text-align: center;
+    }
+    .nota { font-size: 0.86rem; color: #666; margin-top: 18px; line-height: 1.4; }
+    @media (max-width: 760px) {
+      .login-card { grid-template-columns: 1fr; }
+      .hero, .panel { padding: 32px; }
+      .hero h1 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <section class="hero">
+      <h1>POOLINGO</h1>
+      <p>Aprende Programación Orientada a Objetos con Java de forma práctica, didáctica y divertida.</p>
+    </section>
+
+    <section class="panel">
+      <div class="tabs">
+        <button class="tab active" id="tabLogin" type="button">Iniciar sesión</button>
+        <button class="tab" id="tabRegistro" type="button">Crear cuenta</button>
+      </div>
+
+      <form id="formLogin" class="active">
+        <label for="loginEmail">Correo</label>
+        <input id="loginEmail" type="email" placeholder="tu correo" required>
+        <label for="loginPassword">Contraseña</label>
+        <input id="loginPassword" type="password" placeholder="tu contraseña" required>
+        <button class="boton" type="submit">Entrar a POOLINGO</button>
+      </form>
+
+      <form id="formRegistro">
+        <label for="regNombre">Nombre</label>
+        <input id="regNombre" type="text" placeholder="tu nombre" required>
+        <label for="regEmail">Correo</label>
+        <input id="regEmail" type="email" placeholder="tu correo" required>
+        <label for="regPassword">Contraseña</label>
+        <input id="regPassword" type="password" placeholder="mínimo 6 caracteres" required>
+        <button class="boton" type="submit">Crear mi cuenta</button>
+      </form>
+
+      <p id="mensaje"></p>
+      <p class="nota">Versión local: las cuentas se guardan en este navegador. Después podemos conectar Firebase para que funcione desde varios dispositivos.</p>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegistro = document.getElementById('tabRegistro');
+    const formLogin = document.getElementById('formLogin');
+    const formRegistro = document.getElementById('formRegistro');
+    const mensaje = document.getElementById('mensaje');
+
+    if (PoolingoAuth.getCurrentUser()) window.location.href = 'menu.html';
+
+    function cambiarTab(tipo) {
+      const loginActivo = tipo === 'login';
+      tabLogin.classList.toggle('active', loginActivo);
+      tabRegistro.classList.toggle('active', !loginActivo);
+      formLogin.classList.toggle('active', loginActivo);
+      formRegistro.classList.toggle('active', !loginActivo);
+      mensaje.textContent = '';
+    }
+
+    tabLogin.addEventListener('click', () => cambiarTab('login'));
+    tabRegistro.addEventListener('click', () => cambiarTab('registro'));
+
+    formLogin.addEventListener('submit', (event) => {
+      event.preventDefault();
+      try {
+        PoolingoAuth.login({
+          email: document.getElementById('loginEmail').value,
+          password: document.getElementById('loginPassword').value
+        });
+        window.location.href = 'menu.html';
+      } catch (error) {
+        mensaje.style.color = '#c62828';
+        mensaje.textContent = error.message;
+      }
+    });
+
+    formRegistro.addEventListener('submit', (event) => {
+      event.preventDefault();
+      try {
+        PoolingoAuth.register({
+          nombre: document.getElementById('regNombre').value,
+          email: document.getElementById('regEmail').value,
+          password: document.getElementById('regPassword').value
+        });
+        window.location.href = 'menu.html';
+      } catch (error) {
+        mensaje.style.color = '#c62828';
+        mensaje.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

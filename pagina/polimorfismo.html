@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Polimorfismo - POO</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      color: #2d2d2d;
+      font-size: 1.8em;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #FF5722;
+      margin-top: 20px;
+    }
+
+    pre {
+      background: #333;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .ejemplo {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border-left: 4px solid #FF5722;
+      border-radius: 8px;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      text-align: center;
+      background: #333;
+      color: white;
+      font-size: 0.9em;
+    }
+  
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>POO Web</h1>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Inicio</a></li>
+        <li><a href="clases.html">Clases</a></li>
+        <li><a href="objetos.html">Objetos</a></li>
+        <li><a href="herencia.html">Herencia</a></li>
+        <li><a href="polimorfismo.html">Polimorfismo</a></li>
+      </ul>
+    </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+  </header>
+
+  <div class="contenedor">
+    <h2>¿Qué es el Polimorfismo?</h2>
+    <p>
+      El <strong>polimorfismo</strong> significa "muchas formas".  
+      En programación, permite que un mismo método o acción se comporte de manera diferente 
+      dependiendo del objeto que lo use.
+    </p>
+
+    <h2>¿Para qué sirve?</h2>
+    <p>
+      Nos ayuda a escribir código más <strong>flexible</strong> y <strong>reutilizable</strong>.  
+      Gracias al polimorfismo, diferentes clases pueden tener métodos con el mismo nombre, 
+      pero que se ejecutan de manera distinta.
+    </p>
+
+    <h2>Ejemplo en la vida real</h2>
+    <div class="ejemplo">
+      <p><strong>Clase:</strong> Animal</p>
+      <ul>
+        <li>Todos los animales hacen un sonido.</li>
+      </ul>
+      <p><strong>Clases hijas:</strong></p>
+      <ul>
+        <li>Perro → hace “guau”</li>
+        <li>Gato → hace “miau”</li>
+      </ul>
+    </div>
+
+    <h2>Ejemplo en código (Python)</h2>
+    <pre>
+class Animal:
+    def hacer_sonido(self):
+        pass
+
+class Perro(Animal):
+    def hacer_sonido(self):
+        return "Guau"
+
+class Gato(Animal):
+    def hacer_sonido(self):
+        return "Miau"
+
+# Uso de polimorfismo
+animales = [Perro(), Gato()]
+
+for animal in animales:
+    print(animal.hacer_sonido())
+# Salida:
+# Guau
+# Miau
+    </pre>
+
+    <h2>Conclusión</h2>
+    <p>
+      El polimorfismo permite que diferentes clases usen un mismo método, pero que cada una lo ejecute a su manera.  
+      Esto hace que los programas sean más dinámicos y fáciles de expandir.
+    </p>
+  </div>
+
+  <footer>
+    © 2025 POO Web - Todos los derechos reservados
+  </footer>
+
+
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Unidad 3: Estructuras Avanzadas y Arreglos</title>
+<style>
+    /* ------------------------------------------- */
+    /* --- ESTILOS GENERALES (BASE CLASES.HTML) --- */
+    /* ------------------------------------------- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    /* Barra de navegación */
+    header {
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Padding para que el contenido no quede bajo el header */
+    body::before {
+        content: "";
+        display: block;
+        height: 80px;
+    }
+
+    header h1 {
+        color: #2d2d2d;
+        font-size: 1.8em;
+        margin: 0;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav a {
+        text-decoration: none;
+        /* Color blanco para mejor contraste en el header (como clases.html) */
+        color: white; 
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav a:hover {
+        color: #222;
+    }
+    
+    /* Contenedor principal centrado (como clases.html) */
+    .contenedor {
+        max-width: 900px;
+        margin: 40px auto;
+        /* Fondo más sutil que el de clases.html para mejorar lectura */
+        background: #f5f5f5; 
+        border-radius: 12px;
+        padding: 0 15px; /* Pequeño padding lateral */
+    }
+
+    /* Secciones de contenido (Tarjetas como clases.html) */
+    .tarjeta {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 40px;
+    }
+
+    /* Título principal de la unidad - Color verde de clases.html */
+    .tarjeta h2 {
+        color: #4CAF50; 
+        border-bottom: 2px solid #ECF0F1; /* Borde sutil */
+        padding-bottom: 10px;
+        margin-top: 0;
+    }
+    
+    /* Subtítulos de la sección */
+    .tarjeta h3 {
+        color: #5555FF; /* Manteniendo el azul para jerarquía secundaria */
+        margin-top: 25px;
+    }
+
+    /* Caja de información (antes .tarjeta, ahora un Callout Azul) */
+    .callout-info {
+        padding: 15px;
+        margin: 15px 0;
+        border-left: 5px solid #2196F3; /* Azul para destacar información */
+        background: #e3f2fd; 
+        border-radius: 4px;
+    }
+    .callout-info h3 {
+        color: #2196F3;
+        margin-top: 0;
+    }
+
+    /* Estilo de la caja de código (Consistente con clases.html) */
+    .code-example-box {
+        background: #2d2d2d; /* Fondo oscuro para código */
+        color: #f5f5f5;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 15px 0;
+    }
+
+    .code-example-box h4 {
+        margin-top: 0;
+        border-bottom: 1px dashed #555;
+        padding-bottom: 5px;
+        color: #4CAF50; /* Color verde para el título del código */
+    }
+
+    pre code {
+        color: #74ebd5; /* Color claro para el texto principal del código */
+        background: none;
+    }
+
+    /* Estilo de código inline */
+    code {
+        background: #eee;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+    }
+
+    /* ------------------------------------- */
+    /* --- ESTILOS DE BOTONES Y ACTIVIDADES --- */
+    /* ------------------------------------- */
+    
+    /* Contenedor para alinear los botones (Verificar y Reiniciar) */
+    .buttons-group {
+        display: flex;
+        gap: 15px; 
+        justify-content: flex-start; /* Alineación a la izquierda */
+        margin-top: 25px;
+    }
+
+    /* Botón Principal (Verificar) - Coherente con el degradado del header */
+    .btn-check {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #74ebd5, #ACB6E5); 
+        color: #2d2d2d;
+        font-weight: bold;
+        font-size: 1.0em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn-check:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        opacity: 0.9;
+    }
+
+    /* Botón Secundario (Reiniciar) - Estilo sutil y limpio */
+    .btn-secondary {
+        padding: 12px 25px;
+        border: 2px solid #ACBCD5;
+        border-radius: 8px;
+        background: #f5f5f5; 
+        color: #555;
+        font-weight: bold;
+        font-size: 1.0em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary:hover {
+        background: #e0e8f2;
+        transform: translateY(-1px);
+    }
+
+    /* Contenedor de la actividad (ahora solo un div simple dentro de tarjeta) */
+    .actividad-container {
+        padding: 0;
+        margin-top: 15px;
+    }
+    
+    /* Estilos de tabla para Actividad 3.2 */
+    .actividad-tabla {
+        width: 100%; 
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    .actividad-tabla th, .actividad-tabla td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+    .actividad-tabla th {
+        background-color: #ECF0F1;
+        color: #2C3E50;
+    }
+    .actividad-tabla input[type="number"] {
+        padding: 5px;
+        border-radius: 4px;
+        width: 60px;
+        text-align: center;
+        border: 1px solid #ccc;
+        transition: all 0.2s;
+    }
+
+    /* Opciones múltiples (para Actividad 3.3) */
+    .opcion-multiple-box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    /* Resultados (como clases.html) */
+    .resultado-box {
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        text-align: center;
+        display: none;
+    }
+    .resultado-box.correcto {
+        background: #C8E6C9; /* Verde claro */
+        color: #2E7D32; /* Verde oscuro */
+    }
+    .resultado-box.incorrecto {
+        background: #FFCDD2; /* Rojo claro */
+        color: #C62828; /* Rojo oscuro */
+    }
+
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+    <header>
+        <h1>POOLINGO</h1>
+        <nav>
+            <ul>
+                <li><a href="menu.html">Inicio</a></li>
+                <li><a href="clases.html">Unidad 1</a></li>
+                <li><a href="unidad2.html">Unidad 2</a></li>
+                <li><a href="U3.html">Unidad 3</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+            </ul>
+        </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+    </header>
+
+    <div class="contenedor">
+        
+        <section id="introduccion-u3" class="tarjeta">
+            <h2>¡Bienvenidos a la Unidad 3: Estructuras Avanzadas y Arreglos!</h2>
+            <p>En esta unidad, pondremos en práctica todo lo aprendido sobre lógica de programas. Exploraremos cómo manejar grandes cantidades de datos usando **Arreglos** y **Colecciones** de manera eficiente, y cubriremos las bases para crear código robusto y bien documentado.</p>
+        </section>
+
+        <section id="control-avanzado" class="tarjeta">
+            <h2>3.1 Programas con Estructuras de Control</h2>
+            <p>Las estructuras de control (**if/else, for, while**) son la columna vertebral de la lógica. En la práctica, estas estructuras se combinan y anidan para resolver problemas complejos, como iterar sobre datos y tomar decisiones en cada paso.</p>
+
+            <div class="callout-info">
+                <h3>Anidamiento (Nesting)</h3>
+                <p>Es la práctica de colocar una estructura de control dentro de otra (ej. un <code>if</code> dentro de un <code>for</code> o viceversa) para crear lógicas más precisas. Esto es clave al trabajar con arreglos bidimensionales o colecciones complejas.</p>
+            </div>
+
+            <div class="code-example-box">
+                <h4 style="color: #4CAF50;">Ejemplo: Bucle con Decisión</h4>
+                <pre><code style="color: #d4d4d4;">
+for (int i = 1; i <= 5; i++) { // Repetir 5 veces
+    if (i % 2 == 0) { // Si 'i' es par
+        System.out.println(i + " es un número par.");
+    } else {
+        System.out.println(i + " es impar.");
+    }
+}
+</code></pre>
+            </div>
+        </section>
+        
+        <section id="arreglos" class="tarjeta">
+            <h2>3.2 Arreglos (Arrays)</h2>
+            <p>Un **Arreglo** es una estructura de datos que almacena una **colección de elementos del mismo tipo** en una secuencia de memoria fija. Se accede a los elementos mediante un **índice** (posición), que siempre comienza en **cero (0)**.</p>
+
+            <h3>Arreglos Unidimensionales (1D)</h3>
+            <p>Son listas simples de elementos. Se declaran usando corchetes <code>[]</code>.</p>
+            <div class="code-example-box">
+                <h4 style="color: #4CAF50;">Sintaxis 1D</h4>
+                <pre><code style="color: #d4d4d4;">
+// Declaración e inicialización
+String[] nombres = {"Ana", "Luis", "Carlos"};
+
+// Acceso al elemento:
+System.out.println(nombres[1]); // Output: Luis
+</code></pre>
+            </div>
+
+            <h3>Arreglos Bidimensionales (2D - Matrices)</h3>
+            <p>Son estructuras tipo matriz o tabla (filas y columnas). Requieren dos pares de corchetes <code>[][]</code> para su declaración y acceso. Usualmente se usa un doble bucle <code>for</code> para recorrerlas.</p>
+            <div class="code-example-box">
+                <h4 style="color: #4CAF50;">Sintaxis 2D (Matriz 2x3)</h4>
+                <pre><code style="color: #d4d4d4;">
+int[][] matriz = {
+    {1, 2, 3}, // Fila 0
+    {4, 5, 6}  // Fila 1
+};
+
+// Acceso: Fila 1, Columna 0
+System.out.println(matriz[1][0]); // Output: 4
+</code></pre>
+            </div>
+
+            <div id="actividad32" class="actividad-container">
+                <h3>📍 Actividad 3.2: Indexación de Arreglos</h3>
+                <p>Dado el arreglo <code>int[] numeros = {10, 20, 30, 40, 50};</code>, ¿qué índice corresponde a cada valor?</p>
+                <table class="actividad-tabla">
+                    <thead>
+                        <tr>
+                            <th>Valor</th>
+                            <th>Índice (0, 1, 2...)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10</td>
+                            <td><input type="number" id="arr_p1"></td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td><input type="number" id="arr_p2"></td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td><input type="number" id="arr_p3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="buttons-group">
+                    <button onclick="verificarArreglos()" class="btn-check">Verificar Respuestas</button>
+                    <button onclick="reiniciarArreglos()" class="btn-secondary">Reiniciar</button>
+                </div>
+                <div id="resultadoArreglos" class="resultado-box"></div>
+            </div>
+        </section>
+        
+        <section id="colecciones" class="tarjeta">
+            <h2>3.3 Colecciones (Arreglos Dinámicos)</h2>
+            <p>A diferencia de los arreglos fijos (tamaño inmutable), las **Colecciones** permiten que el tamaño de la estructura de datos cambie dinámicamente durante la ejecución del programa. La clase más común en Java es **<code>ArrayList</code>**.</p>
+
+            <div class="callout-info">
+                <h3>Ventaja Clave</h3>
+                <p>El <code>ArrayList</code> es **dinámico**. Permite **añadir** o **eliminar** elementos fácilmente en tiempo de ejecución, a diferencia de los arreglos tradicionales cuyo tamaño se define al inicio.</p>
+            </div>
+
+            <h3>Iteradores y el bucle for-each</h3>
+            <p>El bucle **<code>for-each</code>** (también llamado bucle mejorado o *enhanced for loop*) es un tipo de iterador que simplifica el proceso de recorrer colecciones y arreglos, enfocándose solo en los elementos y no en el manejo manual de los índices.</p>
+            
+            <div class="code-example-box">
+                <h4 style="color: #4CAF50;">Ejemplo: ArrayList y for-each</h4>
+                <pre><code style="color: #d4d4d4;">
+// 1. Crear un ArrayList 
+ArrayList&lt;String&gt; lista = new ArrayList&lt;&gt;();
+lista.add("Manzana");
+lista.add("Pera");
+lista.remove(0); // Elimina "Manzana"
+
+// 2. Recorrer con for-each
+for (String fruta : lista) {
+    System.out.println("Comer: " + fruta);
+}
+// Output: Comer: Pera
+</code></pre>
+            </div>
+
+            <div id="actividad33" class="actividad-container">
+                <h3>❓ Actividad 3.3: Arreglos vs. ArrayList</h3>
+                <p>Selecciona la opción que describe correctamente la principal diferencia entre un arreglo (`String[]`) y un ArrayList (`ArrayList<String>`).</p>
+                <div class="opcion-multiple-box" id="list_q1_box">
+                    <label><input type="radio" name="list_q1" value="A"> El arreglo puede almacenar diferentes tipos de datos.</label><br>
+                    <label><input type="radio" name="list_q1" value="B"> El ArrayList es dinámico y puede cambiar su tamaño en ejecución.</label><br>
+                    <label><input type="radio" name="list_q1" value="C"> Solo el arreglo permite acceder a elementos mediante índice.</label><br>
+                </div>
+                
+                <div class="buttons-group">
+                    <button onclick="verificarColecciones()" class="btn-check">Verificar Respuestas</button>
+                    <button onclick="reiniciarColecciones()" class="btn-secondary">Reiniciar</button>
+                </div>
+                <div id="resultadoColecciones" class="resultado-box"></div>
+            </div>
+        </section>
+
+
+        <section id="pruebas" class="tarjeta">
+            <h2>3.4 Pruebas de Métodos y Documentación Básica</h2>
+            <p>El código no solo debe funcionar, sino que debe ser comprensible y verificable. Estos dos pilares aseguran la calidad y el mantenimiento del software.</p>
+
+            <h3>Documentación Básica (Javadoc)</h3>
+            <p><strong>Javadoc</strong> es una herramienta que genera documentación HTML de manera automática a partir de comentarios especiales en el código, usando la sintaxis <code>/** ... */</code>. Es esencial para explicar la función de clases, métodos y parámetros.</p>
+            
+            <div class="code-example-box">
+                <h4 style="color: #4CAF50;">Ejemplo: Comentario Javadoc</h4>
+                <pre><code style="color: #d4d4d4;">
+/**
+ * Este método calcula la suma de dos números enteros.
+ * @param a Primer número entero
+ * @param b Segundo número entero
+ * @return La suma total de a y b.
+ */
+public int sumar(int a, int b) {
+    return a + b;
+}
+</code></pre>
+            </div>
+
+            <h3>Pruebas de Métodos (Testing)</h3>
+            <p>Consiste en verificar que un método produce el resultado esperado para una entrada dada. Esta práctica se realiza con casos de prueba: se alimenta el método con un valor conocido y se verifica que el resultado sea el esperado. En la industria, se usan frameworks especializados como **JUnit**.</p>
+            <div class="callout-info">
+                <h3>Caso de Prueba</h3>
+                <p>Para probar el método <code>sumar(a, b)</code>, un caso de prueba es: Si se llama a <code>sumar(5, 3)</code>, la prueba verifica si la salida es **8**.</p>
+            </div>
+        </section>
+
+    </div> <script>
+        // --- Funciones de Actividad 3.2: Arreglos ---
+        function verificarArreglos() {
+            const respuestas = {
+                "arr_p1": 0,
+                "arr_p2": 2,
+                "arr_p3": 4
+            };
+            const ids = ["arr_p1", "arr_p2", "arr_p3"];
+            let aciertos = 0;
+            const total = ids.length;
+            const resultadoDiv = document.getElementById("resultadoArreglos");
+
+            ids.forEach(id => {
+                const input = document.getElementById(id);
+                const valorUsuario = parseInt(input.value);
+                const respuestaCorrecta = respuestas[id];
+
+                if (valorUsuario === respuestaCorrecta) {
+                    aciertos++;
+                    input.style.borderColor = "#4CAF50";
+                    input.style.backgroundColor = "#E8F5E9";
+                } else {
+                    input.style.borderColor = "#E53935";
+                    input.style.backgroundColor = "#FFEBEE";
+                }
+            });
+
+            resultadoDiv.style.display = "block";
+            resultadoDiv.className = 'resultado-box'; // Resetear clase
+            if (aciertos === total) {
+                resultadoDiv.classList.add('correcto');
+                resultadoDiv.textContent = `✅ ¡Perfecto! Entiendes que la indexación de arreglos comienza en 0 (${aciertos}/${total}).`;
+            } else {
+                resultadoDiv.classList.add('incorrecto');
+                resultadoDiv.textContent = `Tienes ${aciertos} de ${total} correctos. Recuerda: el primer elemento es índice 0.`;
+            }
+        }
+
+        function reiniciarArreglos() {
+            const ids = ["arr_p1", "arr_p2", "arr_p3"];
+            const resultadoDiv = document.getElementById("resultadoArreglos");
+
+            ids.forEach(id => {
+                const input = document.getElementById(id);
+                input.value = ""; 
+                input.style.borderColor = "#ccc"; 
+                input.style.backgroundColor = "white"; 
+            });
+            resultadoDiv.style.display = "none";
+            resultadoDiv.className = 'resultado-box'; // Limpiar clase
+        }
+
+        // --- Funciones de Actividad 3.3: Colecciones ---
+        function verificarColecciones() {
+            const respuestas = {
+                "list_q1": "B" // El ArrayList es dinámico...
+            };
+            const preguntas = ["list_q1"];
+            let aciertos = 0;
+            const total = preguntas.length;
+            const resultadoDiv = document.getElementById("resultadoColecciones");
+
+            preguntas.forEach(qName => {
+                const radios = document.getElementsByName(qName);
+                const box = document.getElementById(qName + "_box");
+                let respuestaUsuario = "";
+
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        respuestaUsuario = radio.value;
+                    }
+                });
+
+                if (respuestaUsuario === respuestas[qName]) {
+                    aciertos++;
+                    box.style.border = "2px solid #4CAF50";
+                    box.style.backgroundColor = "#E8F5E9";
+                } else {
+                    box.style.border = "2px solid #E53935";
+                    box.style.backgroundColor = "#FFEBEE";
+                }
+            });
+
+            resultadoDiv.style.display = "block";
+            resultadoDiv.className = 'resultado-box'; // Resetear clase
+            if (aciertos === total) {
+                resultadoDiv.classList.add('correcto');
+                resultadoDiv.textContent = `🎉 ¡Correcto! El ArrayList es la opción dinámica (${aciertos}/${total}).`;
+            } else {
+                resultadoDiv.classList.add('incorrecto');
+                resultadoDiv.textContent = `Tienes ${aciertos} de ${total} correctos. Repasa la diferencia clave entre Array y ArrayList.`;
+            }
+        }
+
+        function reiniciarColecciones() {
+            const preguntas = ["list_q1"];
+            const resultadoDiv = document.getElementById("resultadoColecciones");
+
+            preguntas.forEach(qName => {
+                const radios = document.getElementsByName(qName);
+                const box = document.getElementById(qName + "_box");
+                radios.forEach(radio => radio.checked = false);
+                box.style.border = "1px solid #ddd";
+                box.style.backgroundColor = "transparent";
+            });
+            resultadoDiv.style.display = "none";
+            resultadoDiv.className = 'resultado-box'; // Limpiar clase
+        }
+    </script>
+
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+
+</body>
+</html>

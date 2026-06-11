@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil - POOLINGO</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+    }
+
+    /* Encabezado fijo */
+    header {
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      color: #2d2d2d;
+      font-size: 1.8em;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    /* Contenedor principal */
+    .contenedor {
+      margin-top: 120px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .perfil {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .perfil img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #4CAF50;
+    }
+
+    .perfil h2 {
+      margin: 15px 0 5px;
+      color: #333;
+    }
+
+    .perfil p {
+      color: #666;
+      font-size: 0.95em;
+    }
+
+    /* Progreso circular */
+    .progresos {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .progreso {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(#4CAF50 var(--porcentaje), #ddd 0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .progreso::before {
+      content: "";
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .progreso span {
+      position: relative;
+      font-weight: bold;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    .titulo-progreso {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1em;
+      color: #555;
+    }
+
+    /* Formulario */
+    .formulario {
+      margin-top: 50px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .formulario h3 {
+      margin-bottom: 15px;
+      color: #4CAF50;
+    }
+
+    .formulario input, .formulario textarea, .formulario button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95em;
+    }
+
+    .formulario button {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .formulario button:hover {
+      background: #45a049;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 20px;
+      background: #333;
+      color: white;
+      font-size: 0.9em;
+    }
+
+    .logout-btn {
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .sesion { color: white; font-weight: bold; }
+  
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <h1>POOLINGO</h1>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Inicio</a></li>
+        <li><a href="clases.html">Unidad 1</a></li>
+        <li><a href="unidad2.html">Unidad 2</a></li>
+        <li><a href="U3.html">Unidad 3</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+    </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="contenedor">
+    <div id="perfilForm">
+      <div class="perfil">
+        <img id="fotoPerfil" src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Foto de perfil">
+        <h2 id="nombreUsuario">Usuario nuevo</h2>
+        <p id="correoUsuario"></p>
+        <p id="descripcionUsuario">Aún no has agregado información a tu perfil.</p>
+      </div>
+
+      <div class="progresos" id="progresosContainer">
+        <div>
+          <div class="progreso" id="circleUnidad1" style="--porcentaje: 0%;"><span id="unidad1">0%</span></div>
+          <p class="titulo-progreso">Unidad 1</p>
+        </div>
+        <div>
+          <div class="progreso" id="circleUnidad2" style="--porcentaje: 0%;"><span id="unidad2">0%</span></div>
+          <p class="titulo-progreso">Unidad 2</p>
+        </div>
+        <div>
+          <div class="progreso" id="circleUnidad3" style="--porcentaje: 0%;"><span id="unidad3">0%</span></div>
+          <p class="titulo-progreso">Unidad 3</p>
+        </div>
+        <div>
+          <div class="progreso" id="circleSkill" style="--porcentaje: 0%;"><span id="skill1">0%</span></div>
+          <p class="titulo-progreso">Skill: POO</p>
+        </div>
+      </div>
+
+      <div class="formulario">
+        <h3>Editar perfil</h3>
+        <input type="text" id="nombre" placeholder="Nombre de usuario">
+        <textarea id="descripcion" placeholder="Escribe una breve descripción..."></textarea>
+        <input type="text" id="foto" placeholder="URL de foto (opcional)">
+        <button onclick="guardarPerfil()">Guardar perfil</button>
+        <button type="button" onclick="poolingoCerrarSesion()" style="background:#333;">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 POOLINGO - Todos los derechos reservados
+  </footer>
+
+  <script src="auth.js"></script>
+  <script>
+    PoolingoAuth.requireSession();
+
+    function pintarPorcentaje(idCircle, idText, valor) {
+      const porcentaje = Math.max(0, Math.min(100, Number(valor) || 0));
+      document.getElementById(idCircle).style.setProperty('--porcentaje', porcentaje + '%');
+      document.getElementById(idText).textContent = porcentaje + '%';
+    }
+
+    function mostrarPerfil() {
+      const usuarioActual = PoolingoAuth.getCurrentUser();
+      if (!usuarioActual) return;
+      document.getElementById('nombreUsuario').textContent = usuarioActual.nombre;
+      document.getElementById('correoUsuario').textContent = usuarioActual.email;
+      document.getElementById('descripcionUsuario').textContent = usuarioActual.descripcion || 'Aún no has agregado información a tu perfil.';
+      document.getElementById('fotoPerfil').src = usuarioActual.foto || 'https://cdn-icons-png.flaticon.com/512/1077/1077012.png';
+      document.getElementById('nombre').value = usuarioActual.nombre || '';
+      document.getElementById('descripcion').value = usuarioActual.descripcion || '';
+      document.getElementById('foto').value = usuarioActual.foto || '';
+
+      const progreso = usuarioActual.progreso || {};
+      pintarPorcentaje('circleUnidad1', 'unidad1', progreso.unidad1);
+      pintarPorcentaje('circleUnidad2', 'unidad2', progreso.unidad2);
+      pintarPorcentaje('circleUnidad3', 'unidad3', progreso.unidad3);
+      pintarPorcentaje('circleSkill', 'skill1', progreso.skillPOO);
+    }
+
+    function guardarPerfil() {
+      PoolingoAuth.updateCurrentUser({
+        nombre: document.getElementById('nombre').value.trim() || 'Usuario nuevo',
+        descripcion: document.getElementById('descripcion').value.trim(),
+        foto: document.getElementById('foto').value.trim()
+      });
+      mostrarPerfil();
+      alert('Perfil actualizado');
+    }
+
+    mostrarPerfil();
+  </script>
+
+</body>
+</html>
