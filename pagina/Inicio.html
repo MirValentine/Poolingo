@@ -126,55 +126,59 @@
   </main>
 
   <script src="auth.js"></script>
-  <script>
-    const tabLogin = document.getElementById('tabLogin');
-    const tabRegistro = document.getElementById('tabRegistro');
-    const formLogin = document.getElementById('formLogin');
-    const formRegistro = document.getElementById('formRegistro');
-    const mensaje = document.getElementById('mensaje');
+<script>
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegistro = document.getElementById('tabRegistro');
+  const formLogin = document.getElementById('formLogin');
+  const formRegistro = document.getElementById('formRegistro');
+  const mensaje = document.getElementById('mensaje');
 
-    if (PoolingoAuth.getCurrentUser()) window.location.href = 'menu.html';
+  function cambiarTab(tipo) {
+    const loginActivo = tipo === 'login';
+    tabLogin.classList.toggle('active', loginActivo);
+    tabRegistro.classList.toggle('active', !loginActivo);
+    formLogin.classList.toggle('active', loginActivo);
+    formRegistro.classList.toggle('active', !loginActivo);
+    mensaje.textContent = '';
+  }
 
-    function cambiarTab(tipo) {
-      const loginActivo = tipo === 'login';
-      tabLogin.classList.toggle('active', loginActivo);
-      tabRegistro.classList.toggle('active', !loginActivo);
-      formLogin.classList.toggle('active', loginActivo);
-      formRegistro.classList.toggle('active', !loginActivo);
-      mensaje.textContent = '';
+  tabLogin.addEventListener('click', () => cambiarTab('login'));
+  tabRegistro.addEventListener('click', () => cambiarTab('registro'));
+
+  formLogin.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    try {
+      mensaje.style.color = '#2e7d32';
+      mensaje.textContent = 'Iniciando sesión...';
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      await PoolingoAuth.login(email, password);
+    } catch (error) {
+      mensaje.style.color = '#c62828';
+      mensaje.textContent = 'Correo o contraseña incorrectos.';
     }
+  });
 
-    tabLogin.addEventListener('click', () => cambiarTab('login'));
-    tabRegistro.addEventListener('click', () => cambiarTab('registro'));
+  formRegistro.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-    formLogin.addEventListener('submit', (event) => {
-      event.preventDefault();
-      try {
-        PoolingoAuth.login({
-          email: document.getElementById('loginEmail').value,
-          password: document.getElementById('loginPassword').value
-        });
-        window.location.href = 'menu.html';
-      } catch (error) {
-        mensaje.style.color = '#c62828';
-        mensaje.textContent = error.message;
-      }
-    });
+    try {
+      mensaje.style.color = '#2e7d32';
+      mensaje.textContent = 'Creando cuenta...';
 
-    formRegistro.addEventListener('submit', (event) => {
-      event.preventDefault();
-      try {
-        PoolingoAuth.register({
-          nombre: document.getElementById('regNombre').value,
-          email: document.getElementById('regEmail').value,
-          password: document.getElementById('regPassword').value
-        });
-        window.location.href = 'menu.html';
-      } catch (error) {
-        mensaje.style.color = '#c62828';
-        mensaje.textContent = error.message;
-      }
-    });
-  </script>
+      const nombre = document.getElementById('regNombre').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      await PoolingoAuth.registrar(email, password, nombre);
+    } catch (error) {
+      mensaje.style.color = '#c62828';
+      mensaje.textContent = 'No se pudo crear la cuenta. Usa una contraseña de mínimo 6 caracteres o revisa el correo.';
+    }
+  });
+</script>
 </body>
 </html>
