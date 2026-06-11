@@ -254,66 +254,57 @@
   </footer>
 
   <script src="auth.js"></script>
-  <script>
-    PoolingoAuth.requireSession();
-
-    function pintarPorcentaje(idCircle, idText, valor) {
-      const porcentaje = Math.max(0, Math.min(100, Number(valor) || 0));
-      document.getElementById(idCircle).style.setProperty('--porcentaje', porcentaje + '%');
-      document.getElementById(idText).textContent = porcentaje + '%';
-    }
-
-    function mostrarPerfil() {
-      const usuarioActual = PoolingoAuth.getCurrentUser();
-      if (!usuarioActual) return;
-      document.getElementById('nombreUsuario').textContent = usuarioActual.nombre;
-      document.getElementById('correoUsuario').textContent = usuarioActual.email;
-      document.getElementById('descripcionUsuario').textContent = usuarioActual.descripcion || 'Aún no has agregado información a tu perfil.';
-      document.getElementById('fotoPerfil').src = usuarioActual.foto || 'https://cdn-icons-png.flaticon.com/512/1077/1077012.png';
-      document.getElementById('nombre').value = usuarioActual.nombre || '';
-      document.getElementById('descripcion').value = usuarioActual.descripcion || '';
-      document.getElementById('foto').value = usuarioActual.foto || '';
-
-      const progreso = usuarioActual.progreso || {};
-      pintarPorcentaje('circleUnidad1', 'unidad1', progreso.unidad1);
-      pintarPorcentaje('circleUnidad2', 'unidad2', progreso.unidad2);
-      pintarPorcentaje('circleUnidad3', 'unidad3', progreso.unidad3);
-      pintarPorcentaje('circleSkill', 'skill1', progreso.skillPOO);
-    }
-
-    function guardarPerfil() {
-      PoolingoAuth.updateCurrentUser({
-        nombre: document.getElementById('nombre').value.trim() || 'Usuario nuevo',
-        descripcion: document.getElementById('descripcion').value.trim(),
-        foto: document.getElementById('foto').value.trim()
-      });
-      mostrarPerfil();
-      alert('Perfil actualizado');
-    }
-
-    mostrarPerfil();
-  </script>
+ <script src="auth.js"></script>
 <script src="progreso.js"></script>
 
 <script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const progreso = obtenerProgreso();
+  PoolingoAuth.requireSession();
 
-  if (!progreso) return;
+  function pintarPorcentaje(idCircle, idText, valor) {
+    const porcentaje = Math.max(0, Math.min(100, Number(valor) || 0));
+    document.getElementById(idCircle).style.setProperty('--porcentaje', porcentaje + '%');
+    document.getElementById(idText).textContent = porcentaje + '%';
+  }
 
-  const score = progreso.score || 0;
-  const actividades = Object.keys(progreso.actividades || {}).length;
+  function mostrarPerfil() {
+    const usuarioActual = PoolingoAuth.getCurrentUser();
+    if (!usuarioActual) return;
 
-  document.getElementById("scoreTotal").textContent = score;
-  document.getElementById("actividadesCompletadas").textContent = actividades;
+    document.getElementById('nombreUsuario').textContent = usuarioActual.nombre;
+    document.getElementById('correoUsuario').textContent = usuarioActual.email;
+    document.getElementById('descripcionUsuario').textContent = usuarioActual.descripcion || 'Aún no has agregado información a tu perfil.';
+    document.getElementById('fotoPerfil').src = usuarioActual.foto || 'https://cdn-icons-png.flaticon.com/512/1077/1077012.png';
+    document.getElementById('nombre').value = usuarioActual.nombre || '';
+    document.getElementById('descripcion').value = usuarioActual.descripcion || '';
+    document.getElementById('foto').value = usuarioActual.foto || '';
 
-  const totalUnidad1 = 145;
-  const porcentajeUnidad1 = Math.min(Math.round((score / totalUnidad1) * 100), 100);
+    const progreso = obtenerProgreso();
+    if (!progreso) return;
 
-  pintarPorcentaje("circleUnidad1", "unidad1", porcentajeUnidad1);
-  pintarPorcentaje("circleSkill", "skill1", porcentajeUnidad1);
-});
+    const score = progreso.score || 0;
+    const actividades = Object.keys(progreso.actividades || {}).length;
+
+    document.getElementById("scoreTotal").textContent = score;
+    document.getElementById("actividadesCompletadas").textContent = actividades;
+
+    const totalUnidad1 = 145;
+    const porcentajeUnidad1 = Math.min(Math.round((score / totalUnidad1) * 100), 100);
+
+    pintarPorcentaje("circleUnidad1", "unidad1", porcentajeUnidad1);
+    pintarPorcentaje("circleSkill", "skill1", porcentajeUnidad1);
+  }
+
+  function guardarPerfil() {
+    PoolingoAuth.updateCurrentUser({
+      nombre: document.getElementById('nombre').value.trim() || 'Usuario nuevo',
+      descripcion: document.getElementById('descripcion').value.trim(),
+      foto: document.getElementById('foto').value.trim()
+    });
+    mostrarPerfil();
+    alert('Perfil actualizado');
+  }
+
+  mostrarPerfil();
 </script>
 </body>
 </html>
