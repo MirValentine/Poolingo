@@ -278,22 +278,68 @@
     document.getElementById('descripcion').value = usuarioActual.descripcion || '';
     document.getElementById('foto').value = usuarioActual.foto || '';
 
-    const progreso = obtenerProgreso();
-    if (!progreso) return;
+   const progreso = obtenerProgreso();
+if (!progreso) return;
 
-    const score = progreso.score || 0;
-    const actividades = Object.keys(progreso.actividades || {}).length;
+const score = progreso.score || 0;
+const acts = progreso.actividades || {};
+const actividades = Object.keys(acts).length;
 
-    document.getElementById("scoreTotal").textContent = score;
-    document.getElementById("actividadesCompletadas").textContent = actividades;
+document.getElementById("scoreTotal").textContent = score;
+document.getElementById("actividadesCompletadas").textContent = actividades;
 
-    const totalUnidad1 = 145;
-    const porcentajeUnidad1 = Math.min(Math.round((score / totalUnidad1) * 100), 100);
+// ===== UNIDAD 1 =====
+const actividadesU1 = [
+  "actividad_relacion",
+  "actividad_tipos_dato_select",
+  "tipos_datos_drag",
+  "actividad_declaracion_variables",
+  "actividad_operaciones_aritmeticas",
+  "actividad_instanciacion",
+  "actividad_constructores_1",
+  "actividad_constructores_2",
+  "actividad_clasificacion",
+  "actividad_encapsulacion"
+];
 
-    pintarPorcentaje("circleUnidad1", "unidad1", porcentajeUnidad1);
-    pintarPorcentaje("circleSkill", "skill1", porcentajeUnidad1);
-  }
+// ===== UNIDAD 2 =====
+const actividadesU2 = [
+  "unidad2_intro_uml",
+  "unidad2_diagrama_clases",
+  "unidad2_diagrama_secuencia",
+  "unidad2_relaciones_uml"
+];
 
+// ===== UNIDAD 3 =====
+const actividadesU3 = [];
+
+function calcularPorcentaje(lista) {
+  if (lista.length === 0) return 0;
+
+  const completadas = lista.filter(nombre =>
+    acts[nombre]
+  ).length;
+
+  return Math.min(
+    Math.round((completadas / lista.length) * 100),
+    100
+  );
+}
+
+const porcentajeUnidad1 = calcularPorcentaje(actividadesU1);
+const porcentajeUnidad2 = calcularPorcentaje(actividadesU2);
+const porcentajeUnidad3 = calcularPorcentaje(actividadesU3);
+
+const porcentajeSkill = Math.round(
+  (porcentajeUnidad1 +
+   porcentajeUnidad2 +
+   porcentajeUnidad3) / 3
+);
+
+pintarPorcentaje("circleUnidad1", "unidad1", porcentajeUnidad1);
+pintarPorcentaje("circleUnidad2", "unidad2", porcentajeUnidad2);
+pintarPorcentaje("circleUnidad3", "unidad3", porcentajeUnidad3);
+pintarPorcentaje("circleSkill", "skill1", porcentajeSkill);
   function guardarPerfil() {
     PoolingoAuth.updateCurrentUser({
       nombre: document.getElementById('nombre').value.trim() || 'Usuario nuevo',
