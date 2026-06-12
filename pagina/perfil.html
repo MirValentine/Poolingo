@@ -255,6 +255,7 @@
 
   <script src="auth.js"></script>
   <script src="progreso.js"></script>
+  <script type="module" src="pagina/firebase.js"></script>
 
   <script>
     PoolingoAuth.requireSession();
@@ -264,7 +265,11 @@
       const circulo = document.getElementById(idCircle);
       const texto = document.getElementById(idText);
 
-      if (circulo) circulo.style.setProperty('--porcentaje', porcentaje + '%');
+      if (circulo) {
+        circulo.style.setProperty('--porcentaje', porcentaje + '%');
+        circulo.style.background = `conic-gradient(#4CAF50 ${porcentaje}%, #ddd ${porcentaje}% 100%)`;
+      }
+
       if (texto) texto.textContent = porcentaje + '%';
     }
 
@@ -281,9 +286,39 @@
       );
     }
 
-    function mostrarPerfil() {
+    async function esperarFirebase(intentos = 30) {
+      for (let i = 0; i < intentos; i++) {
+        if (window.PoolingoFirebase) return true;
+        await new Promise(resolve => setTimeout(resolve, 150));
+      }
+      return false;
+    }
+
+    async function sincronizarProgresoFirebase(email) {
+      if (!email) return;
+
+      const firebaseListo = await esperarFirebase();
+      if (!firebaseListo) return;
+
+      try {
+        const progresoNube = await window.PoolingoFirebase.cargarProgreso(email);
+
+        if (progresoNube) {
+          localStorage.setItem(
+            "poolingo_progreso_" + email,
+            JSON.stringify(progresoNube)
+          );
+        }
+      } catch (error) {
+        console.warn("No se pudo cargar el progreso desde Firebase:", error);
+      }
+    }
+
+    async function mostrarPerfil() {
       const usuarioActual = PoolingoAuth.getCurrentUser();
       if (!usuarioActual) return;
+
+      await sincronizarProgresoFirebase(usuarioActual.email);
 
       document.getElementById('nombreUsuario').textContent = usuarioActual.nombre || 'Usuario nuevo';
       document.getElementById('correoUsuario').textContent = usuarioActual.email || '';
@@ -293,8 +328,10 @@
       document.getElementById('descripcion').value = usuarioActual.descripcion || '';
       document.getElementById('foto').value = usuarioActual.foto || '';
 
-      const progreso = obtenerProgreso();
-      if (!progreso) return;
+      const progreso = obtenerProgreso() || {
+        score: 0,
+        actividades: {}
+      };
 
       const score = progreso.score || 0;
       const actividadesGuardadas = progreso.actividades || {};
@@ -318,7 +355,6 @@
       ];
 
       // ===== UNIDAD 2 =====
-      // Estos nombres coinciden con los guardarProgreso(...) de unidad2_nueva.html
       const actividadesU2 = [
         'unidad2_elementos_clase',
         'unidad2_visibilidad_uml',
@@ -328,7 +364,6 @@
       ];
 
       // ===== UNIDAD 3 =====
-      // Cuando agreguemos progreso a Unidad 3, ponemos aquí sus nombres.
       const actividadesU3 = [];
 
       const porcentajeUnidad1 = calcularPorcentaje(actividadesGuardadas, actividadesU1);
@@ -364,7 +399,9 @@
       alert('Perfil actualizado');
     }
 
-    mostrarPerfil();
+    document.addEventListener('DOMContentLoaded', () => {
+      mostrarPerfil();
+    });
   </script>
 </body>
 </html>
