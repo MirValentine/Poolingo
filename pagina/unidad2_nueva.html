@@ -2,622 +2,315 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Clases - POO</title>
-<style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidad 2 - Modelado y Diseño UML</title>
+  <style>
     body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        color: #333;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
     }
 
-    /* Barra de navegación */
     header {
-        background: linear-gradient(90deg, #74ebd5, #ACB6E5);
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
 
     body::before {
-        content: "";
-        display: block;
-        height: 80px;
+      content: "";
+      display: block;
+      height: 80px;
     }
 
     header h1 {
-        color: #2d2d2d;
-        font-size: 1.8em;
-        margin: 0;
+      color: #2d2d2d;
+      font-size: 1.8em;
+      margin: 0;
     }
 
     nav ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-        margin: 0;
-        padding: 0;
-    }
-
-    nav ul li {
-        display: inline;
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
     }
 
     nav ul li a {
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-        transition: color 0.3s;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
     }
 
-    nav ul li a:hover {
-        color: #222;
+    nav ul li a:hover,
+    nav ul li a.activo {
+      color: #222;
     }
 
-    /* Contenido */
+    .poolingo-session { color: white; font-weight: bold; }
+    .poolingo-logout { background:#333; color:white; border:none; border-radius:18px; padding:7px 12px; cursor:pointer; font-weight:bold; }
+
     .contenedor {
-        max-width: 900px;
-        margin: 40px auto;
-        background: rgba(214, 207, 207, 0.671);
-        border-radius: 12px;
-        padding: 30px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: 40px auto;
+      background: rgba(214, 207, 207, 0.671);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    h2 {
-        color: #4CAF50;
-        margin-top: 20px;
+    .tarjeta {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
     }
 
-    /* Tabla */
+    h2 { color: #4CAF50; margin-top: 20px; }
+    h3 { color: #2C3E50; }
+    h4 { color: #2E7D32; }
+    p { line-height: 1.6; }
+
     table { width: 100%; border-collapse: collapse; margin: 20px 0; }
     th, td { border: 1px solid #BDC3C7; padding: 12px; text-align: left; }
     th { background-color: #ECF0F1; color: #2C3E50; }
 
-    p { line-height: 1.6; }
-
     pre {
-        background: #333;
-        color: #f8f8f2;
-        padding: 15px;
-        border-radius: 8px;
-        overflow-x: auto;
+      background: #333;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
     }
 
     .ejemplo {
-        margin: 20px 0;
-        padding: 15px;
-        background: #f9f9f9;
-        border-left: 4px solid #4CAF50;
-        border-radius: 8px;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border-left: 4px solid #4CAF50;
+      border-radius: 8px;
     }
 
-    footer {
-        margin-top: 50px;
-        padding: 20px;
-        text-align: center;
-        background: #333;
-        color: white;
-        font-size: 0.9em;
+    .code-example-box {
+      background: #f0f0f0;
+      border-left: 5px solid #00bfff;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      font-size: 0.95em;
     }
 
-    /* Barra de progreso */
-    #progress-container {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 6px;
-        background: rgba(0,0,0,0.1);
-        z-index: 9999;
+    .bienvenida-transicion {
+      background: linear-gradient(90deg, #b7e1f7, #d8c7f9);
+      color: #2d2d2d;
+      border-radius: 15px;
+      padding: 35px;
+      margin-bottom: 40px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      margin-top: 40px;
     }
 
-    #progress-bar {
-        height: 6px;
-        width: 0%;
-        background: linear-gradient(90deg, #4CAF50, #8BC34A);
-        transition: width 0.1s ease;
+    .bienvenida-transicion h2 { color: #4CAF50; margin-bottom: 10px; font-size: 1.8em; }
+    .bienvenida-transicion h3 { color: #2d2d2d; font-size: 1.2em; }
+
+    .buttons-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+      flex-wrap: wrap;
     }
 
-    /* Cuadro de relación */
-    .relacion {
-        margin-top: 30px;
-        padding: 20px;
-        background: #f9f9f9;
-        border: 2px solid #4CAF50;
-        border-radius: 8px;
+    .btn-check, .btn-verificar {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      color: #2d2d2d;
+      font-weight: bold;
+      font-size: 1.05em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    .relacion h3 {
-        color: #2C3E50;
-        margin-bottom: 15px;
+    .btn-check:hover, .btn-verificar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      opacity: 0.9;
     }
 
-    .relacion select {
-        margin: 5px 0;
-        padding: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
+    .btn-secondary {
+      padding: 12px 25px;
+      border: 2px solid #ACBCD5;
+      border-radius: 8px;
+      background: #f5f5f5;
+      color: #555;
+      font-weight: bold;
+      font-size: 1.05em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .resultado {
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        text-align: center;
+    .btn-secondary:hover { background: #e0e8f2; transform: translateY(-1px); }
+
+    .activity-section {
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border: 2px solid #4CAF50;
     }
 
-    /* Bloque de ejemplo en código */
-    .codigo-python {
-        margin-top: 40px;
+    .resultado-mensaje, .resultado-simple {
+      margin-top: 15px;
+      display: none;
+      padding: 12px;
+      font-weight: bold;
+      border-radius: 10px;
+      text-align: center;
     }
 
-    .codigo-python h3 {
-        color: #4CAF50;
-        margin-bottom: 10px;
-    }
-
-    .codigo-python pre {
-        background: #2d2d2d;
-        color: #f8f8f2;
-        border-radius: 8px;
-        padding: 15px;
-        overflow-x: auto;
-    }
-
-    /* Sección completar código */
-    .codigo-completar {
-        margin-top: 40px;
-        padding: 20px;
-        background: #f9f9f9;
-        border: 2px solid #4CAF50;
-        border-radius: 8px;
-    }
-
-    .codigo-completar input {
-        border: none;
-        border-bottom: 2px solid #4CAF50;
-        background: transparent;
-        color: #333;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .codigo-completar input:focus {
-        outline: none;
-        background: #e8f5e9;
-    }
-
-    .codigo-completar button {
-        margin-top: 15px;
-        padding: 10px 15px;
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .codigo-completar button:hover {
-        background: #45a049;
-    }
-
-    /* Cuadro donde irá el video */
-    .video-placeholder {
-        width: 100%;
-        height: 250px;
-        background: #e8f5e9;
-        border: 2px dashed #4CAF50;
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        color: #2E7D32;
-        margin: 20px 0;
-    }
-    .tarjeta {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        margin-bottom: 40px;
-    }
-
-    /* ---- ACTIVIDAD DRAG & DROP ---- */
+    .correcto { background: #c8e6c9; color: #2e7d32; display: block; }
+    .incorrecto { background: #ffcdd2; color: #c62828; display: block; }
 
     .drag-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        margin: 25px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 25px 0;
     }
 
-    .drag-items {
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
+    .drag-items, .bloques {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 15px;
+      background: #f0f7ff;
+      border: 2px solid #90caf9;
+      border-radius: 10px;
+      min-height: 55px;
     }
 
-    .drag-item {
-        padding: 10px 15px;
-        background: #e0f2f1;
-        border: 2px solid #26a69a;
-        border-radius: 8px;
-        cursor: grab;
-        font-weight: bold;
-        user-select: none;
+    .drag-item, .bloque {
+      padding: 10px 15px;
+      background: #e8f5e9;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      cursor: grab;
+      font-weight: bold;
+      user-select: none;
+      touch-action: none;
     }
 
-    .drop-zone {
-        padding: 15px;
-        border: 2px dashed #80cbc4;
-        border-radius: 10px;
-        min-height: 60px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
-        background: #f1f8e9;
-    }
-
-    .drop-zone.correct {
-        border-color: #4caf50;
-        background: #e8f5e9;
-    }
-
-    .drop-zone.incorrect {
-        border-color: #e53935;
-        background: #ffebee;
-    }
-
-    .drop-label {
-        font-size: 0.9em;
-        font-weight: bold;
-        color: #2e7d32;
-    }
-
-    #checkButton {
-        padding: 10px 20px;
-        background: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 15px;
-    }
-
-    #checkButton:hover {
-        background: #43a047;
-    }
-
-    /* Mensaje final */
-    #resultadoFinal {
-        margin-top: 20px;
-        padding: 15px;
-        font-weight: bold;
-        border-radius: 10px;
-        text-align: center;
-        display: none;
-    }
-
-    #resultadoFinal.correcto {
-        background: #c8e6c9;
-        color: #2e7d32;
-    }
-
-    #resultadoFinal.incorrecto {
-        background: #ffcdd2;
-        color: #c62828;
-    }
-
-    /* CLASES DE BOTONES VIEJAS - ELIMINADAS/REEMPLAZADAS POR LAS NUEVAS */
-
-    .resultado-simple {
-        margin-top: 15px;
-        display: none;
-        padding: 12px;
-        font-weight: bold;
-        border-radius: 10px;
-        text-align: center;
-    }
-    .actividad-drag {
-        margin-top: 30px;
-        padding: 20px;
-        background: #f9f9f9;
-        border: 2px solid #4CAF50;
-        border-radius: 10px;
-    }
-
-    .drop-area {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 20px;
-    }
+    .drag-item:active, .bloque:active { cursor: grabbing; }
 
     .drop-zone {
-        width: 30%;
-        padding: 15px;
-        height: 50px;
-        border: 2px dashed #4CAF50;
-        border-radius: 8px;
-        text-align: center;
-        line-height: 20px;
-        font-weight: bold;
-        background: #ffffff;
+      width: 100%;
+      min-height: 50px;
+      border: 2px dashed #4CAF50;
+      background: #ffffff;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 8px;
+      font-weight: bold;
+      flex-wrap: wrap;
+      box-sizing: border-box;
     }
 
-    .drag-options {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 10px;
+    .drop-zone.correct { border-color: #4caf50; background: #e8f5e9; }
+    .drop-zone.incorrect { border-color: #e53935; background: #ffebee; }
+    .drop-label { font-size: 0.95em; font-weight: bold; color: #2e7d32; width: 100%; }
+    .dropped { padding: 8px 12px; background: #e3f2fd; border: 2px solid #64b5f6; border-radius: 7px; }
+
+    .quiz-item {
+      margin-bottom: 15px;
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid #74ebd5;
     }
 
-    .drag-item {
-        padding: 10px 15px;
-        border-radius: 7px;
-        background: #e8f5e9;
-        border: 2px solid #4CAF50;
-        cursor: grab;
-        font-weight: bold;
+    .quiz-item label { display: block; margin: 8px 0; cursor: pointer; }
+
+    .code-input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      box-sizing: border-box;
     }
 
-    .drag-item:active {
-        cursor: grabbing;
+    .code-input:focus, select:focus {
+      outline: none;
+      border-color: #74ebd5;
+      box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
     }
 
-    .resultado-simple {
-        display: none;
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 6px;
-        font-weight: bold;
-        text-align: center;
-    }
-    .drag-actividad {
-        margin-top: 30px;
-        padding: 20px;
-        background: #f9f9f9;
-        border: 2px solid #4CAF50;
-        border-radius: 10px;
+    .nav-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    .zona-drop {
-        width: 100%;
-        min-height: 45px;
-        border: 2px dashed #4CAF50;
-        border-radius: 6px;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        padding: 8px;
-        background: #ffffff;
-        margin-bottom: 15px;
+    .btn-nav, #btn-siguiente-unidad {
+      color: white;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
     }
 
-    .bloques {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+    .btn-nav { background: linear-gradient(90deg, #555, #777); }
+    #btn-siguiente-unidad:hover, .btn-nav:hover { transform: scale(1.02); }
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      text-align: center;
+      background: #333;
+      color: white;
+      font-size: 0.9em;
     }
 
-    .bloque {
-        padding: 6px 10px;
-        background: #e8f5e9;
-        border: 1px solid #4CAF50;
-        border-radius: 6px;
-        cursor: grab;
-        user-select: none;
-        font-size: 14px;
-        font-weight: bold;
+    @media (max-width: 760px) {
+      header { flex-direction: column; gap: 10px; align-items: flex-start; }
+      body::before { height: 140px; }
+      .contenedor { margin: 20px 12px; padding: 18px; }
+      .tarjeta { padding: 18px; }
+      nav ul { gap: 12px; }
     }
-
-    .bloque:active {
-        cursor: grabbing;
-    }
-
-
-    .resultadoDrag {
-        font-weight: bold;
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 6px;
-        text-align: center;
-    }
-
-    /* ===== BLOQUES DRAG & DROP DECLARACIÓN ===== */
-    #bloques-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 20px 0;
-        padding: 15px;
-        background: #f0f7ff;
-        border: 2px solid #90caf9;
-        border-radius: 10px;
-        min-height: 50px; /* Para que sea un drop-zone válido */
-    }
-
-    .bloque {
-        padding: 8px 12px;
-        background: #ffffff;
-        border: 2px solid #64b5f6;
-        border-radius: 6px;
-        cursor: grab;
-        font-weight: bold;
-        transition: 0.2s;
-        user-select: none;
-    }
-
-    .bloque:active {
-        cursor: grabbing;
-    }
-
-    .bloque:hover {
-        background: #e3f2fd;
-        transform: scale(1.05);
-    }
-
-    /* Zonas donde soltar */
-    .drop-zone {
-        width: 100%;
-        min-height: 45px;
-        border: 2px dashed #4CAF50;
-        background: #ffffff;
-        margin-bottom: 10px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        padding: 6px;
-        gap: 6px;
-        font-weight: bold;
-        flex-wrap: wrap; 
-    }
-    /* --- Estilos para la Actividad 4: Declaraciones Aritméticas --- */
-
-    /* Estilo general del contenedor de la actividad */
-    .activity-section {
-        padding: 20px;
-        margin: 20px auto;
-        max-width: 900px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    /* Estilo para el ejemplo de formato */
-    .code-example-box {
-        background: #f0f0f0;
-        border-left: 5px solid #00bfff; /* Azul cian como en el código */
-        padding: 10px 15px;
-        margin-bottom: 20px;
-        border-radius: 4px;
-        font-size: 0.95em;
-    }
-    .code-example-box code {
-        font-family: 'Courier New', monospace;
-        color: #2e7d32; /* Verde fuerte para el código en el ejemplo */
-        background: #e9e9e9;
-        padding: 2px 4px;
-        border-radius: 3px;
-    }
-
-    /* Contenedor de las preguntas */
-    .code-quiz {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    /* Campo de entrada de código */
-    .code-input {
-        width: 100%; /* Ocupa todo el ancho */
-        padding: 10px;
-        margin-top: 5px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        font-family: 'Courier New', monospace;
-        font-size: 1em;
-        color: #333;
-        transition: border-color 0.3s ease;
-        box-sizing: border-box; /* Incluye padding y border en el ancho */
-    }
-
-    /* Estado de focus */
-    .code-input:focus {
-        outline: none;
-        border-color: #74ebd5; /* Color del gradiente de tu header */
-        box-shadow: 0 0 5px rgba(116, 235, 213, 0.5);
-    }
-
-    /* --- Estilo para el cuadro de Felicitación/Transición (Basado en .bienvenida de menu.html) --- */
-    .bienvenida-transicion {
-        background: linear-gradient(90deg, #b7e1f7, #d8c7f9);
-        color: #2d2d2d;
-        border-radius: 15px;
-        padding: 35px;
-        margin-bottom: 40px;
-        text-align: center;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        margin-top: 40px; /* Para separarlo de la actividad anterior */
-    }
-
-    .bienvenida-transicion h2 {
-        color: #4CAF50;
-        margin-bottom: 10px;
-        font-size: 1.8em;
-    }
-    /* Reutilizamos este estilo para el título */
-    .bienvenida-transicion h3 {
-        color: #2d2d2d;
-        font-size: 1.2em;
-    }
-
-    /* ======================================================= */
-    /* === ESTILOS DE BOTONES UNIFICADOS (PRINCIPAL/SECUNDARIO) === */
-    /* ======================================================= */
-
-    /* Contenedor para alinear los botones (Verificar y Reiniciar) */
-    .buttons-group {
-        display: flex;
-        gap: 15px; 
-        justify-content: center; 
-        margin-top: 25px;
-    }
-
-    /* Botón Principal (Verificar) - Coherente con el degradado del header */
-    .btn-check {
-        padding: 12px 25px;
-        border: none;
-        border-radius: 8px;
-        /* Degradado del header */
-        background: linear-gradient(90deg, #74ebd5, #ACB6E5); 
-        color: #2d2d2d;
-        font-weight: bold;
-        font-size: 1.1em;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .btn-check:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        opacity: 0.9;
-    }
-
-    /* Botón Secundario (Reiniciar) - Estilo sutil y limpio */
-    .btn-secondary {
-        padding: 12px 25px;
-        border: 2px solid #ACBCD5;
-        border-radius: 8px;
-        background: #f5f5f5; 
-        color: #555;
-        font-weight: bold;
-        font-size: 1.1em;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .btn-secondary:hover {
-        background: #e0e8f2;
-        transform: translateY(-1px);
-    }
-</style>
-
   </style>
 </head>
 <body>
@@ -628,1488 +321,575 @@
       <ul>
         <li><a href="menu.html">Inicio</a></li>
         <li><a href="clases.html">Unidad 1</a></li>
-        <li><a href="#">Unidad 2</a></li>
-        <li><a href="#">Unidad 3</a></li>
+        <li><a href="unidad2.html" class="activo">Unidad 2</a></li>
+        <li><a href="U3.html">Unidad 3</a></li>
         <li><a href="perfil.html">Perfil</a></li>
       </ul>
     </nav>
+    <div class="poolingo-session">Hola, <span data-poolingo-user></span> <button class="poolingo-logout" onclick="poolingoCerrarSesion()">Salir</button></div>
   </header>
 
   <div class="contenedor">
+
     <div class="tarjeta">
-<h2>Introducción a la Unidad 1: Fundamentos de la Programación</h2>
-    <p>¡Nos alegra muchísimo que hayas decidido tomar este curso!
-Esta primera unidad marcará el inicio de tu camino en la Programación Orientada a Objetos y está diseñada para que aprendas de forma clara, didáctica y práctica, sin importar si tienes poca o ninguna experiencia.</p>
-<p>En la <strong>Unidad 1</strong>, conocerás los cimientos de la programación:</p>
-<ul>
-  <li><strong>Identificar y usar variables y constantes</strong>, así como realizar <strong>operaciones básicas</strong> con ellas.</li>
-  <li><strong>Construir clases y crear objetos</strong>, entendiendo cómo representan elementos del mundo real.</li>
-  <li>Comprender qué son los <strong>atributos</strong>, los <strong>métodos</strong> y cómo funciona la <strong>encapsulación</strong> dentro de una clase.</li>
-  <li>Utilizar las <strong>estructuras de control</strong> fundamentales para que un programa pueda</li>
-  <p></p>
-  <ul>
-    <li><strong>Tomar decisiones</strong> (condicionales).</li>
-    <li><strong>Repetir acciones</strong> (bucles).</li>
-  </ul>
-</ul>
-<p>Todos estos conceptos los verás con ejemplos en Java, uno de los lenguajes más utilizados para aprender POO.</p>
-<p>Al terminar esta unidad, tendrás una base sólida para comprender cómo se piensa, se organiza y se escribe un programa.</p>
-<p><strong>¡Bienvenido(a) al inicio de esta aventura en el mundo de la programación!</strong></p>
-</div>
-<p></p>
-<p></p>
-<p></p>
-   <div class="tarjeta">
- <h2>1.1 Tipos de datos: variables y operaciones básicas</h2>
-    <h3>¿Que es una variable?</h3>
-    <h4>Variable</h4>
-    <p>Una variable es un espacio en la memoria donde un programa guarda un dato que puede cambiar durante la ejecución.
-Cada <strong>variable</strong> tiene un <strong>nombre</strong> que sirve para identificarla y acceder a su valor cuando sea necesario.</p>
-<p>Las variables sirven para <strong>guardar y recuperar datos,</strong> representar valores existentes y permitir asignarles valores nuevos cuando sea necesario.
-También permiten que los programadores se refieran a un dato usando un <strong>nombre representativo</strong>, en lugar de recordar el valor directamente, lo que facilita el desarrollo y comprensión de programas más complejos.</p>
-<p></p>
-<h3>Reglas básicas para nombrar y declarar variables</h3>
-<p>Las variables deben cumplir con ciertas características y reglas para poder declararse correctamente dentro de un programa. Estas reglas aseguran que el código sea claro, ordenado y que la computadora pueda interpretar sin errores los nombres y valores que se les asignan.</p>
-<ul>
-    <li><strong>Identificador:</strong> Es el nombre de la variable dentro del programa.</li>
-    <li><strong>Sin espacios:</strong> No se permiten espacios en el nombre.</li>
-    <li><strong>No iniciar con un número:</strong> Ejemplo: <code>edad1</code> ✔️, <code>1edad</code> ❌</li>
-    <li><strong>No usar palabras reservadas:</strong> Como <code>if</code>, <code>else</code>, <code>while</code>, etc.</li>
-    <li><strong>Mayúsculas y minúsculas importan:</strong> <code>total</code> y <code>Total</code> son variables distintas.</li>
-    <li><strong>Declaración obligatoria:</strong> Antes de usar una variable, se debe declarar su tipo, nombre y opcionalmente el valor inicial.</li>
-  </ul>
+      <h2>Unidad 2: Modelado y Diseño</h2>
+      <p>En esta unidad aprenderás a representar visualmente un sistema antes de programarlo. Así como un arquitecto usa planos antes de construir una casa, un programador puede usar diagramas para planear clases, objetos, relaciones y procesos.</p>
+      <p>Trabajaremos principalmente con <strong>UML</strong>, que significa <em>Lenguaje Unificado de Modelado</em>. UML permite explicar cómo se organiza un programa sin depender todavía de un lenguaje como Java, Python o C++.</p>
+      <ul>
+        <li>Identificarás elementos básicos de un diagrama de clases.</li>
+        <li>Relacionarás símbolos UML con su significado.</li>
+        <li>Comprenderás el orden de mensajes en diagramas de secuencia.</li>
+        <li>Distinguirás relaciones como asociación, herencia, agregación y composición.</li>
+      </ul>
+    </div>
 
-  <h3>¿Cómo se declara una variable?</h3>
-  <pre><code>tipo nombre = valor;</code></pre>
-
-  <h3>Ejemplos en Java</h3>
-  <pre><code>int edad = 20;
-String nombre = "Luis";
-double precio = 19.99;
-boolean activo = true;
-</code></pre>
-</section>
- <div class="video-placeholder">
-  Aquí irá el video explicativo de variables
-</div>
-</div>
- <div class="tarjeta">
-  <h2>Tipos de dato</h2>
-  <p>Cuando programamos, necesitamos guardar información dentro de variables: números, palabras, valores verdaderos o falsos, e incluso datos más complejos.
-Para que la computadora sepa qué <strong>tipo de información</strong> va a almacenar cada variable, es necesario indicar el <strong>tipo de dato.</strong></p>
-<p>Los tipos de datos funcionan como categorías que le indican al programa <strong>qué tipo de valores puede almacenar una variable, cuánta memoria debe reservar para guardarlos y qué operaciones están permitidas con ellos.</strong> Gracias a estas categorías, el lenguaje de programación puede interpretar correctamente la información y evitar errores al momento de ejecutar el código.</p>
-<p>En Java (y en la mayoría de lenguajes), los tipos de datos se dividen principalmente en:</p>
-<ul>
-  <li><strong>Datos numéricos:</strong> Incluyen valores enteros y decimales que se utilizan para realizar operaciones matemáticas.</li>
-  <li><strong>Datos de texto:</strong> Representan caracteres y cadenas de palabras que permiten almacenar nombres, mensajes y cualquier información escrita.</li>
-  <li><strong>Datos lógicos:</strong> Se limitan a dos valores posibles, <em>true</em> o <em>false</em>, y se emplean para tomar decisiones dentro de un programa.</li>
-</ul>
-<p>Java utiliza diferentes tipos de datos según la información que necesitemos almacenar. Estos son los más comunes:</p>
-
-<ul>
-  <li><strong>int:</strong> Representa números enteros sin decimales (por ejemplo: 5, 120, -3).</li>
-  <li><strong>double:</strong> Representa números decimales con precisión (por ejemplo: 3.14, 8.75).</li>
-  <li><strong>char:</strong> Almacena un solo carácter entre comillas simples (por ejemplo: 'A', '7').</li>
-  <li><strong>String:</strong> Representa texto, como palabras o frases completas.</li>
-  <li><strong>boolean:</strong> Solo puede almacenar verdadero o falso (true / false).</li>
-</ul>
-
-<pre><code>
-// Ejemplos de tipos de datos en Java
-
-int edad = 20;
-double precio = 19.99;
-char inicial = 'M';
-String nombre = "Miriam";
-boolean activo = true;
-
-System.out.println("Edad: " + edad);
-System.out.println("Precio: " + precio);
-System.out.println("Inicial: " + inicial);
-System.out.println("Nombre: " + nombre);
-System.out.println("Activo: " + activo);
-</code></pre>
-
-</div>
- <div class="tarjeta">
-  <h3>Actividad interactiva: Arrastra el tipo de dato correcto</h3>
-<p>Relaciona cada descripción con el tipo de dato adecuado arrastrando los bloques.</p>
-
-<div class="drag-container">
-
-  <div class="drag-items">
-    <div class="drag-item" draggable="true" data-type="int">int</div>
-    <div class="drag-item" draggable="true" data-type="double">double</div>
-    <div class="drag-item" draggable="true" data-type="char">char</div>
-    <div class="drag-item" draggable="true" data-type="String">String</div>
-    <div class="drag-item" draggable="true" data-type="boolean">boolean</div>
-  </div>
-
-  <div class="drop-zone" data-answer="String">
-    <div class="drop-label">Texto o palabra (Ej: "Hola")</div>
-  </div>
-
-  <div class="drop-zone" data-answer="boolean">
-    <div class="drop-label">Verdadero o falso (Ej: true)</div>
-  </div>
-
-  <div class="drop-zone" data-answer="char">
-    <div class="drop-label">Un solo carácter (Ej: 'A')</div>
-  </div>
-
-  <div class="drop-zone" data-answer="double">
-    <div class="drop-label">Número decimal (Ej: 3.14)</div>
-  </div>
-
-  <div class="drop-zone" data-answer="int">
-    <div class="drop-label">Número entero sin decimales (Ej: 25)</div>
-  </div>
-
-  <button id="checkButton">Verificar respuestas</button>
-<button id="resetButton" type="button">Reiniciar actividad</button>
-
-  <div id="resultadoFinal"></div>
-
-</div>
-
-
-
-<div class="actividad"> 
-  <h3>Actividad: identifica el tipo de dato</h3>
-  <p>Selecciona el tipo de dato correcto para cada valor:</p>
-
-  <p>"Hola Mundo" → 
-    <select class="preg" data-answer="String">
-      <option value="">Selecciona...</option>
-      <option>int</option>  
-      <option>String</option>
-      <option>boolean</option>
-    </select>
-  </p>
-
-  <p>54 → 
-    <select class="preg" data-answer="int">
-      <option value="">Selecciona...</option>
-      <option>double</option>
-      <option>int</option>
-      <option>boolean</option>
-    </select>
-  </p>
-
-  <p>true → 
-    <select class="preg" data-answer="boolean">
-      <option value="">Selecciona...</option>
-      <option>String</option>
-      <option>boolean</option>
-      <option>char</option>
-    </select>
-  </p>
-
-  <button id="checkActividadSimple" class="btn-verificar">
-    Verificar respuestas
-  </button>
-
-  <button id="resetActividadSimple" class="btn-reset">
-    Reiniciar actividad
-  </button>
-
-  <div id="resultadoActividadSimple" class="resultado-simple"></div>
-</div>
-
-
-</div>
     <div class="tarjeta">
-  <h2>Declarando variables</h2>
-
-  <p>Hasta ahora ya conociste qué son las variables, para qué sirven y cuáles son las
-  reglas que debemos seguir para nombrarlas correctamente. También revisamos los
-  tipos de datos más comunes, como <em>int, String, double</em> y <em>boolean</em>, así como los
-  valores que pueden almacenar.</p>
-
-  <p>Con toda esta información, ya estamos listos para dar el siguiente paso:
-  <strong>armar declaraciones completas de variables en Java</strong>, eligiendo correctamente
-  el tipo de dato, el nombre de la variable y el valor que va a guardar.</p>
-
-  <p>En la siguiente actividad pondrás en práctica todo lo aprendido organizando los
-  elementos necesarios para formar declaraciones válidas de Java, arrastrando cada 
-  bloque al lugar que corresponde.</p>
-
-
-  <div class="drag-actividad">
-    <h3>Actividad: Declara correctamente las variables</h3>
-    <p>Arrastra los bloques a cada línea para formar declaraciones válidas en Java. (int, double, string, char, boolean)</p>
-
-    <div class="zona-declaraciones">
-      <div class="drop-zone" data-correct="int cantidad = 12 ;"></div>
-      <div class="drop-zone" data-correct="double temperatura = 23.7 ;"></div>
-      <div class="drop-zone" data-correct="String ciudad = &quot;Monterrey&quot; ;"></div>
-      <div class="drop-zone" data-correct="char categoria = 'A' ;"></div>
-      <div class="drop-zone" data-correct="boolean disponible = false ;"></div>
+      <h2>2.1 ¿Qué es UML?</h2>
+      <p><strong>UML</strong> es una forma estándar de representar visualmente un sistema. Sirve para planear, comunicar y documentar cómo estará organizado un programa.</p>
+      <p>En Programación Orientada a Objetos, UML ayuda a responder preguntas como:</p>
+      <ul>
+        <li>¿Qué clases necesita mi sistema?</li>
+        <li>¿Qué datos tendrá cada clase?</li>
+        <li>¿Qué acciones podrá realizar?</li>
+        <li>¿Cómo se comunican los objetos entre sí?</li>
+      </ul>
+      <div class="ejemplo">
+        <strong>Ejemplo:</strong> Para un sistema escolar podrías modelar clases como <code>Alumno</code>, <code>Profesor</code>, <code>Materia</code> y <code>Calificacion</code> antes de escribir código.
+      </div>
     </div>
 
-    <div id="bloques-container"> 
-
-      <div class="bloque" draggable="true" data-value="int">int</div>
-      <div class="bloque" draggable="true" data-value="cantidad">cantidad</div>
-      <div class="bloque" draggable="true" data-value="=">=</div>
-      <div class="bloque" draggable="true" data-value="12">12</div>
-      <div class="bloque" draggable="true" data-value=";">;</div>
-
-      <div class="bloque" draggable="true" data-value="double">double</div>
-      <div class="bloque" draggable="true" data-value="temperatura">temperatura</div>
-      <div class="bloque" draggable="true" data-value="=">=</div>
-      <div class="bloque" draggable="true" data-value="23.7">23.7</div>
-      <div class="bloque" draggable="true" data-value=";">;</div>
-
-      <div class="bloque" draggable="true" data-value="String">String</div>
-      <div class="bloque" draggable="true" data-value="ciudad">ciudad</div>
-      <div class="bloque" draggable="true" data-value="=">=</div>
-      <div class="bloque" draggable="true" data-value="&quot;Monterrey&quot;">"Monterrey"</div>
-      <div class="bloque" draggable="true" data-value=";">;</div>
-
-      <div class="bloque" draggable="true" data-value="char">char</div>
-      <div class="bloque" draggable="true" data-value="categoria">categoria</div>
-      <div class="bloque" draggable="true" data-value="=">=</div>
-      <div class="bloque" draggable="true" data-value="'A'">'A'</div>
-      <div class="bloque" draggable="true" data-value=";">;</div>
-
-      <div class="bloque" draggable="true" data-value="boolean">boolean</div>
-      <div class="bloque" draggable="true" data-value="disponible">disponible</div>
-      <div class="bloque" draggable="true" data-value="=">=</div>
-      <div class="bloque" draggable="true" data-value="false">false</div>
-      <div class="bloque" draggable="true" data-value=";">;</div>
-
-    </div>
-
-    <button id="verificar-btn" class="btn-verificar">Verificar respuestas</button>
-    <button id="reset-drag-btn" class="btn-reset">Reiniciar actividad</button> <p id="resultado-final"></p>
-
-  </div>
-</div>
-<div class="tarjeta">
-  <section id="operaciones" class="content-section">
-    <h2>Operaciones Básicas con Variables (Aritmética)</h2>
-    <p>Una vez que declaramos y asignamos un valor a una variable, podemos usarla para realizar cálculos. En Java, utilizamos los siguientes operadores aritméticos:</p>
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Operador</th>
-                    <th>Nombre</th>
-                    <th>Ejemplo con Variables</th>
-                    <th>Resultado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>+</code></td>
-                    <td>Suma (Adición)</td>
-                    <td><code>int a = 5; int b = 3; int suma = a + b;</code></td>
-                    <td>8</td>
-                </tr>
-                <tr>
-                    <td><code>-</code></td>
-                    <td>Resta (Sustracción)</td>
-                    <td><code>int a = 5; int b = 3; int resta = a - b;</code></td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td><code>*</code></td>
-                    <td>Multiplicación</td>
-                    <td><code>int a = 5; int b = 3; int producto = a * b;</code></td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td><code>/</code></td>
-                    <td>División</td>
-                    <td><code>int a = 5; int b = 3; int cociente = a / b;</code></td>
-                    <td>1 (División entera)</td>
-                </tr>
-                <tr>
-                    <td><code>%</code></td>
-                    <td>Módulo (Residuo)</td>
-                    <td><code>int a = 5; int b = 3; int residuo = a % b;</code></td>
-                    <td>2</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h3>Concepto clave: División Entera</h3>
-    <p>Cuando trabajamos con variables de <strong>tipo entero </strong>tipo entero (<code>int</code>), el operador de división (<code>/</code>) ignora la parte decimal. Si necesitas obtener un resultado con decimales, al menos una de las variables o el resultado deben ser de tipo <code>double</code>.</p>
-</section>
-
-<section id="actividad4" class="activity-section">
-    <h3>Actividad: Declara la operación aritmética</h3>
-    <p>A continuación, se te presenta un problema matemático. Escribe la **declaración completa en Java** (incluyendo el tipo de dato, la operación y el punto y coma) que resuelve el problema.
-        <br><strong>Reglas:</strong> Usa siempre el tipo **int** para enteros o **double** para decimales, y el nombre de variable **resultado**.</p>
-    
-    <div class="code-example-box">
-        <p><strong>Ejemplo de formato:</strong> Para el problema "Suma 8 y 5", la respuesta esperada es: <code>int resultado = 8 + 5;</code></p>
-    </div>
-
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item">
-            <label>1. Realiza una <strong>suma</strong> de 12 y 7:</label>
-            <input type="text" id="op_suma" data-correct="intresultado=12+7;" placeholder="int resultado = ... ;" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>2. Realiza una <strong>resta</strong> de 25 menos 10:</label>
-            <input type="text" id="op_resta" data-correct="intresultado=25-10;" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>3. Realiza una <strong>multiplicación</strong> de 6 por 9:</label>
-            <input type="text" id="op_mult" data-correct="intresultado=6*9;" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>4. Realiza una <strong>división entera</strong> de 20 entre 3:</label>
-            <input type="text" id="op_div_int" data-correct="intresultado=20/3;" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>5. Calcula el <strong>residuo (módulo)</strong> de 17 dividido entre 5:</label>
-            <input type="text" id="op_mod" data-correct="intresultado=17%5;" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>6. Realiza una <strong>división decimal</strong> de 15.0 entre 4:</label>
-            <input type="text" id="op_div_double" data-correct="doubleresultado=15.0/4;" class="code-input">
-        </div>
-    </div>
-    
-    <button onclick="verificarDeclaracionesAritmeticas()" class="btn-check">Verificar Declaraciones</button>
-    <div id="resultadoOperaciones" class="resultado-mensaje"></div>
-</section>
-
-<hr class="separator">
-</div>
-<div class="tarjeta">
-
-<div class="bienvenida-transicion">
-    <h2>¡Felicidades! 🎉 Unidad 1.1 Completada</h2>
-    <h3>1.1 Tipos de datos: variables y operaciones básicas</h3>
-    <p>Acabas de dominar la <strong>declaración de variables</strong> y las <strong>operaciones aritméticas básicas</strong> en Java, ¡los cimientos de cualquier programa!</p>
-    
-    <hr style="width: 50%; margin: 20px auto; border-top: 1px solid #ACBCD5;">
-
-    <h3>🚀 Siguiente Paso: Unidad 1.2 Clases y objetos: atributos, métodos y encapsulación</h3>
-    <p>Ahora estás listo para el concepto central de POO. En la siguiente sección, aprenderás a:</p>
-    <ul>
-        <li><strong>Modelar el mundo real:</strong> Entender la diferencia entre el plano (<strong>Clase</strong>) y la instancia (<strong>Objeto</strong>).</li>
-        <li><strong>Estructura de la Clase:</strong> Definir la estructura con <strong>Atributos</strong> (datos) y <strong>Métodos</strong> (comportamiento).</li>
-        <li><strong>Constructores:</strong> Crear el método especial que se usa para inicializar un objeto.</li>
-        <li><strong>Encapsulación:</strong> Proteger los datos de la clase usando modificadores de acceso (`public` y `private`).</li>
-    </ul>
-</div>
-</div>
-<div class="tarjeta">
-  <h2>Clase y objeto</h2>
-  <h3>¿Que es una clase y un objeto?</h3>
-  <p>En la unidad anterior, aprendiste a manejar <strong>variables</strong> como contenedores individuales para almacenar datos. Sin embargo, en la Programación Orientada a Objetos (POO), necesitamos una forma de agrupar esos datos y el comportamiento relacionado</p>
-  <p></p>La respuesta a esta necesidad son las <strong>Clases</strong> y los <strong>Objetos.</strong></p>
-   <p>Una <strong>Clase</strong> es una especie de plantilla para crear <strong>objetos</strong> de forma ya predefinida. Las Clases sirven para representar conceptos o entidades del mundo real (como un "Estudiante" o una "Cuenta Bancaria"). Cada objeto creado a partir de una Clase ahora será una <strong>instancia</strong> de esa Clase, una parte fundamental de POO.</p>
-<p>Cada objeto tiene dos características fundamentales que lo definen:</p>
-<ul>
-    <li>
-        <strong>Estado (Atributos):</strong> Son los datos específicos que el objeto tiene en un momento dado. Un objeto almacena los valores de las variables definidas en la Clase.
-        <br>
-        <span style="font-style: italic;">Ejemplo:</span> Si la clase es <strong>Coche</strong>, un objeto llamado <strong>miCoche</strong> tendrá los atributos: <code>color = "Rojo"</code>, <code>marca = "Toyota"</code>, <code>velocidad = 50</code>.
-    </li>
-    <li>
-        <strong>Comportamiento (Métodos):</strong> Son las acciones que el objeto puede realizar. Los métodos son compartidos por todos los objetos de la misma clase.
-        <br>
-        <span style="font-style: italic;">Ejemplo:</span> El objeto <strong>miCoche</strong> puede usar los métodos definidos en la clase, como <code>acelerar()</code>, <code>frenar()</code> o <code>encender()</code>.
-    </li>
-</ul>
-<section id="actividad10" class="activity-section">
-    <h3>Actividad 10: Atributo o Método</h3>
-    <p>Observa el siguiente esquema de la clase <code>Perro</code>. Clasifica cada elemento identificando si es un <strong>Atributo</strong> (dato/estado) o un <strong>Método</strong> (comportamiento/acción).</p>
-    
-    <div class="code-example-box" style="background: #e3f2fd; border-left: 5px solid #2196F3;">
-        <h4 style="color: #2196F3;">Clase Perro (Esquema)</h4>
-        <pre><code>class Perro {
-    String nombre;              // Elemento A
-    int edad;                   // Elemento B
-    
-    Perro(String n, int e) { ... } // Elemento C
-    
-    void comer() { ... }        // Elemento D
-    
-    int getEdad() { ... }       // Elemento E
-}</code></pre>
-    </div>
-
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item" style="display: flex; justify-content: space-between; align-items: center;">
-            <label>A. <code>String nombre;</code></label>
-            <select id="classif_p1" class="select-clasificacion">
-                <option value="">-- Seleccionar --</option>
-                <option value="atributo">Atributo</option>
-                <option value="metodo">Método</option>
-            </select>
-        </div>
-        <div class="quiz-item" style="display: flex; justify-content: space-between; align-items: center;">
-            <label>B. <code>int edad;</code></label>
-            <select id="classif_p2" class="select-clasificacion">
-                <option value="">-- Seleccionar --</option>
-                <option value="atributo">Atributo</option>
-                <option value="metodo">Método</option>
-            </select>
-        </div>
-        <div class="quiz-item" style="display: flex; justify-content: space-between; align-items: center;">
-            <label>C. <code>Perro(String n, int e)</code></label>
-            <select id="classif_p3" class="select-clasificacion">
-                <option value="">-- Seleccionar --</option>
-                <option value="atributo">Atributo</option>
-                <option value="metodo">Método</option>
-            </select>
-        </div>
-        <div class="quiz-item" style="display: flex; justify-content: space-between; align-items: center;">
-            <label>D. <code>void comer()</code></label>
-            <select id="classif_p4" class="select-clasificacion">
-                <option value="">-- Seleccionar --</option>
-                <option value="atributo">Atributo</option>
-                <option value="metodo">Método</option>
-            </select>
-        </div>
-        <div class="quiz-item" style="display: flex; justify-content: space-between; align-items: center;">
-            <label>E. <code>int getEdad()</code></label>
-            <select id="classif_p5" class="select-clasificacion">
-                <option value="">-- Seleccionar --</option>
-                <option value="atributo">Atributo</option>
-                <option value="metodo">Método</option>
-            </select>
-        </div>
-    </div>
-    
-    <div class="buttons-group">
-        <button onclick="verificarClasificacion()" class="btn-check">Verificar Clasificación</button>
-        <button onclick="reiniciarClasificacion()" class="btn-secondary">Reiniciar Actividad</button>
-    </div>
-    <div id="resultadoClasificacion" class="resultado-mensaje" style="display:none;"></div>
-</section>
-</div>
-<div class="tarjeta">
-  <h2>Creación de Objetos: La Instanciación</h2>
-  <section id="instanciacion" class="content-section">
-    <p>Una vez que tienes el plano (la Clase), el proceso de crear un Objeto real y funcional a partir de ese plano se llama <strong>instanciación</strong>.</p>
-    <p>En Java, la instanciación se realiza usando la palabra reservada <code>new</code> y llamando al <strong>Constructor</strong> de la clase. El constructor es la "fábrica" que inicializa el objeto.</p>
-
-    <h4>Sintaxis de Instanciación</h4>
-    <p>La línea de código para crear un objeto se divide en tres partes:</p>
-    <div class="code-block">
-        <p class="code">
-            <span class="type">ClaseNombre</span> <span style="color: #ff66cc;">nombreObjeto</span> = <span style="color: #00bfff;">new</span> <span class="type">ClaseNombre</span>();
-        </p>
-    </div>
-    <ul>
-        <li><strong>Declaración:</strong> Especificas el tipo de dato (`ClaseNombre`) y el nombre de tu variable objeto.</li>
-        <li><strong>Palabra clave `new`:</strong> Indica al sistema que reserve memoria para el nuevo objeto.</li>
-        <li><strong>Constructor:</strong> La llamada a `ClaseNombre()` ejecuta el método constructor de la clase para inicializar el objeto.</li>
-    </ul>
-
-    <h4 >Ejemplo Práctico: Creando un Coche</h4>
-    <p>Si tenemos la Clase `Coche`, así creamos un Objeto llamado `miCoche`:</p>
-    <div class="code-block">
-        <p class="code">
-            <span class="type">Coche</span> <span style="color: #ff66cc;">miCoche</span> = <span style="color: #00bfff;">new</span> <span class="type">Coche</span>();
-        </p>
-    </div>
-    <p>Ahora, la variable <code>miCoche</code> contiene la referencia a un objeto `Coche` recién creado en la memoria.</p>
-
-</section>
-<section id="video-instanciacion" class="content-section video-section">
-  
-    <div class="video-placeholder">
-        [Espacio para Video de Instanciación  en Java]
-    </div>
-    
-    <p style="font-style: italic; text-align: center; margin-top: 15px;">**Puntos clave:** Observa la sintaxis de <code>new</code> y la importancia de la palabra reservada <code>this</code>.</p>
-</section>
-</div>
-<section id="actividad6" class="activity-section">
-    <h3>Actividad: Instancia los Objetos</h3>
-    <p>Escribe la línea de código completa en Java para instanciar los siguientes objetos. Recuerda usar la palabra clave <code>new</code> y seguir la convención de **mayúscula inicial para las Clases**.</p>
-    
-    <div class="code-example-box">
-        <p><strong>Clase de Ejemplo:</strong> <code>Estudiante</code></p>
-        <p><strong>Objeto Ejemplo:</strong> <span class="type">Estudiante</span> <span class="variable">juan</span> = <span style="color: #00bfff;">new</span> <span class="type">Estudiante</span>();</p>
-    </div>
-
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item">
-            <label>1. Instancia la clase **Perro** en una variable llamada **bobby**:</label>
-            <input type="text" id="inst_p1" data-correct="perrobobby=newperro()" placeholder="Clase objeto = new Clase();" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>2. Instancia la clase **CuentaBancaria** en una variable llamada **miCuenta**:</label>
-            <input type="text" id="inst_p2" data-correct="cuentabancariamicuenta=newcuentabancaria()" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>3. Instancia la clase **Fecha** en una variable llamada **hoy**:</label>
-            <input type="text" id="inst_p3" data-correct="fechahoy=newfecha()" class="code-input">
-        </div>
-    </div>
-    
-  <div class="buttons-group">
-        <button onclick="verificarInstanciacion()" class="btn-check">Verificar Instanciación</button>
-        <button onclick="reiniciarInstanciacion()" class="btn-secondary">Reiniciar Actividad</button>
-    </div>
-    <div id="resultadoInstanciacion" class="resultado-mensaje" style="display:none;"></div> 
-    
-
-</section>
-
-<div class="tarjeta">
-  <section id="constructores" class="content-section">
-    <h2>Constructores: Inicializando el Objeto</h2>
-    <p>La <strong>Instanciación</strong> (que acabamos de ver con la palabra clave <code>new</code>) es solo la mitad del proceso de creación. El <strong>Constructor</strong>  los constructores en Java deben tener el mismo nombre que la clase y no tener un tipo de retorno. Su objetivo primario es asignar valores iniciales a las variables de instancia del objeto.</p>
-<section id="video-constructores" class="content-section video-section">
-  <div class="tarjeta" style="border: 2px solid #00bfff;">
-        <h3>Características Clave del Constructor</h3>
-        <ul>
-            <li>**Mismo Nombre:** Debe llamarse <strong>exactamente igual que la Clase</strong>.</li>
-            <li>**Sin Retorno:** No tiene tipo de retorno, ni siquiera <code>void</code>.</li>
-            <li>**Llamada Implícita:** Se invoca automáticamente cuando usamos <code>new ClaseNombre()</code>.</li>
-        </ul>
-    </div>
-
-    <h3>Implementación de Constructores en Java</h3>
-   
-    <div class="video-placeholder">
-        [Espacio para Video de Implementación de Constructores]
-    </div>
-    
-  </section>
-
-<hr>
-    <section id="actividad8" class="activity-section">
-    <h3>Actividad: Definición y Uso del Constructor</h3>
-    <p>Utiliza la clase <code>Coche</code> para completar las tres líneas de código. Asume que la clase ya tiene los atributos <code>String marca</code> e <code>int anio</code> definidos.</p>
-    
-    <div class="code-example-box">
-        <p><strong>Tarea:</strong> Crea el constructor con los parámetros <code>String marca</code> e <code>int anio</code>, inicializando los atributos con <code>this</code>, y úsalo para crear dos objetos.</p>
-        <p><strong>Clase de trabajo:</strong> <code>Coche</code></p>
-    </div>
-
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item">
-            <label>1. Define el constructor y asigna los valores a los atributos (sin modificadores de acceso):</label>
-            <input type="text" id="cons_p1" data-correct="coche(stringmarca,intanio)this.marca=marca;this.anio=anio" placeholder="Clase(Tipo arg1, Tipo arg2) { this.attr = arg; ... }" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>2. Crea el objeto **miAuto** con valores: "Toyota", 2024.</label>
-            <input type="text" id="cons_p2" data-correct="cochemiauto=newcoche(toyota,2024)" placeholder="Clase obj = new Clase(args);" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>3. Crea el objeto **autoFamiliar** con valores: "Kia", 2025.</label>
-            <input type="text" id="cons_p3" data-correct="cocheautofamiliar=newcoche(kia,2025)" placeholder="Clase obj = new Clase(args);" class="code-input">
-        </div>
-    </div>
-    
-    <div class="buttons-group">
-        <button onclick="verificarDefinicionConstructores()" class="btn-check">Verificar Definición y Uso</button>
-        <button onclick="reiniciarDefinicionConstructores()" class="btn-secondary">Reiniciar Actividad</button>
-    </div>
-    <div id="resultadoDefinicionConstructores" class="resultado-mensaje" style="display:none;"></div>
-</section>
-<section id="actividad9" class="activity-section">
-    <h3>Actividad: Constructor y Objetos (Parte 2)</h3>
-    <p>Utiliza la clase <code>Estudiante</code> de ejemplo para completar las tres líneas de código. Asume que la clase ya tiene los atributos <code>String nombre</code> y <code>double promedio</code> definidos.</p>
-    
-    <div class="code-example-box">
-        <p><strong>Tarea:</strong> Crea el constructor con los parámetros <code>String nombre</code> y <code>double promedio</code>, inicializando los atributos con <code>this</code>, y úsalo para crear dos objetos.</p>
-        <p><strong>Clase de trabajo:</strong> <code>Estudiante</code></p>
-    </div>
-
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item">
-            <label>1. Define el constructor y asigna los valores a los atributos (sin modificadores de acceso):</label>
-            <input type="text" id="cons2_p1" data-correct="estudiante(stringnombre,doublepromedio)this.nombre=nombre;this.promedio=promedio" placeholder="Clase(Tipo arg1, Tipo arg2) { this.attr = arg; ... }" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>2. Crea el objeto **miEstudiante** con valores: "Ana", 9.5.</label>
-            <input type="text" id="cons2_p2" data-correct="estudiantemiestudiante=newestudiante(ana,9.5)" placeholder="Clase obj = new Clase(args);" class="code-input">
-        </div>
-        <div class="quiz-item">
-            <label>3. Crea el objeto **nuevoIngreso** con valores: "Luis", 8.2.</label>
-            <input type="text" id="cons2_p3" data-correct="estudiantenuevoingreso=newestudiante(luis,8.2)" placeholder="Clase obj = new Clase(args);" class="code-input">
-        </div>
-    </div>
-    <div class="buttons-group">
-        <button onclick="verificarDefinicionConstructores2()" class="btn-check">Verificar Definición y Uso</button>
-        <button onclick="reiniciarDefinicionConstructores2()" class="btn-secondary">Reiniciar Actividad</button>
-    </div>
-    <div id="resultadoDefinicionConstructores2" class="resultado-mensaje" style="display:none;"></div>
-</section>
-    
-</div>
-<div class="tarjeta">
-<section id="encapsulacion-unificada" class="content-section">
-    <h2>1.2. Encapsulación: Implementación con Modificadores de Acceso</h2>
-    <p>La **Encapsulación** es el pilar de POO que nos permite proteger los datos de un objeto. Para implementar esta protección, Java utiliza los <strong>Modificadores de Acceso</strong>.</p>
-
-    <div class="tarjeta" style="border: 2px solid #00bfff;">
-        <h3>Concepto Clave: Ocultamiento de Información</h3>
-        <p>El objetivo es ocultar los **Atributos** para que solo se pueda acceder a ellos a través de los **Métodos** controlados que definimos. </p>
-    </div>
-    
-    <h4>Modificadores de Acceso: La Herramienta de Control</h4>
-    <p>Estos modificadores dictan la visibilidad de los elementos (atributos y métodos) de una clase:</p>
-
-    <table>
+    <div class="tarjeta">
+      <h2>2.2 Diagrama de clases</h2>
+      <p>El <strong>diagrama de clases</strong> muestra la estructura de un sistema. Representa las clases, sus atributos, sus métodos y las relaciones que existen entre ellas.</p>
+      <p>Una clase en UML se dibuja como un rectángulo dividido en tres partes:</p>
+      <table>
         <thead>
-            <tr>
-                <th>Modificador</th>
-                <th>Concepto</th>
-                <th>Rol en la Encapsulación</th>
-            </tr>
+          <tr>
+            <th>Parte</th>
+            <th>Contenido</th>
+            <th>Ejemplo</th>
+          </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><code style="color: #E53935;">private</code></td>
-                <td><strong>Restringido</strong>: Solo visible y accesible <strong>dentro de su propia Clase</strong>.</td>
-                <td>Se usa para los **atributos** (los datos) para protegerlos.</td>
-            </tr>
-            <tr>
-                <td><code style="color: #4CAF50;">public</code></td>
-                <td><strong>Universal</strong>: Visible y accesible desde <strong>cualquier parte</strong> del programa.</td>
-                <td>Se usa para los **métodos** (comportamiento) que deben ser la interfaz pública del objeto.</td>
-            </tr>
+          <tr>
+            <td>Nombre</td>
+            <td>Nombre de la clase</td>
+            <td><code>Estudiante</code></td>
+          </tr>
+          <tr>
+            <td>Atributos</td>
+            <td>Datos o características</td>
+            <td><code>- nombre : String</code></td>
+          </tr>
+          <tr>
+            <td>Métodos</td>
+            <td>Acciones o comportamientos</td>
+            <td><code>+ estudiar() : void</code></td>
+          </tr>
         </tbody>
-    </table>
-    
-    <h4>Getters y Setters: La Interfaz Segura</h4>
-    <p>La **Encapsulación Correcta** se logra al:</p>
-    <ul>
-        <li>Declarar todos los **atributos** como <code style="color: #E53935;">private</code>.</li>
-        <li>Proporcionar **Métodos Getters y Setters** declarados como <code style="color: #4CAF50;">public</code>.</li>
-    </ul>
-
-    <div class="code-example-box">
-        <h4 style="color: #00bfff;">Ejemplo: Encapsulación en la Clase Persona</h4>
-        <pre><code style="color: #74ebd5;">public class Persona {
-    // 1. Atributo oculto (private)
-    <span style="color: #E53935;">private</span> int edad; 
-
-    // 2. Método Setter (public) para modificar con VALIDACIÓN
-    <span style="color: #4CAF50;">public</span> void setEdad(int nuevaEdad) {
-        if (nuevaEdad > 0) { // Validación: Edad debe ser positiva
-            this.edad = nuevaEdad;
-        } else {
-            System.out.println("Error: Edad no válida.");
-        }
-    }
-
-    // 3. Método Getter (public) para leer
-    <span style="color: #4CAF50;">public</span> int getEdad() {
-        return this.edad;
-    }
-}</code></pre>
-    </div>
-</section>
-
-<hr>
-
-## 🛠️ Actividad 11: Implementando Getters y Setters
-
-Esta actividad obliga al estudiante a utilizar los modificadores de acceso correctos en la definición de atributos y métodos.
-
-### 1. Código HTML de la Actividad 11
-
-Añade este bloque HTML **después** de la sección de teoría unificada.
-
-```html
-<section id="actividad11" class="activity-section">
-    <h3>Actividad 11: Implementando Encapsulación</h3>
-    <p>Asume que estás en la clase <code>Producto</code>. Escribe el código necesario para encapsular el atributo <code>String nombre</code>.</p>
-    
-    <div class="code-example-box">
-        <p><strong>Atributo a encapsular:</strong> <code>String nombre</code></p>
+      </table>
+      <pre><code>+------------------------+
+|       Estudiante       |
++------------------------+
+| - nombre : String      |
+| - edad : int           |
++------------------------+
+| + estudiar() : void    |
+| + entregarTarea()      |
++------------------------+</code></pre>
     </div>
 
-    <div class="quiz-container code-quiz">
-        <div class="quiz-item">
-            <label>1. Escribe la declaración del atributo, asegurando que esté oculto:</label>
-            <input type="text" id="encap_p1" data-correct="privatestringnombre" placeholder="Modificador Tipo atributo;" class="code-input">
+    <div class="tarjeta activity-section">
+      <h3>Actividad 1: Arrastra el elemento correcto</h3>
+      <p>Relaciona cada parte del diagrama de clases con su significado.</p>
+
+      <div class="drag-container" id="actividadU2Drag">
+        <div class="drag-items">
+          <div class="drag-item" draggable="true" data-type="clase">Clase</div>
+          <div class="drag-item" draggable="true" data-type="atributo">Atributo</div>
+          <div class="drag-item" draggable="true" data-type="metodo">Método</div>
         </div>
-        <div class="quiz-item">
-            <label>2. Escribe el método Setter (<code>setNombre</code>) completo:</label>
-            <input type="text" id="encap_p2" data-correct="publicvoidsetnombre(stringnombre){this.nombre=nombre;}" placeholder="public void setNombre(Tipo arg) { ... }" class="code-input">
+
+        <div class="drop-zone" data-answer="clase">
+          <div class="drop-label">Plantilla o modelo para crear objetos.</div>
         </div>
-        <div class="quiz-item">
-            <label>3. Escribe el método Getter (<code>getNombre</code>) completo:</label>
-            <input type="text" id="encap_p3" data-correct="publicstringgetnombre(){returnthis.nombre;}" placeholder="public Tipo getNombre() { ... }" class="code-input">
+        <div class="drop-zone" data-answer="atributo">
+          <div class="drop-label">Dato o característica que describe al objeto.</div>
         </div>
+        <div class="drop-zone" data-answer="metodo">
+          <div class="drop-label">Acción o comportamiento que puede realizar un objeto.</div>
+        </div>
+
+        <div class="buttons-group">
+          <button id="btnActividad1" class="btn-check">Verificar respuestas</button>
+          <button id="resetActividad1" class="btn-secondary">Reiniciar actividad</button>
+        </div>
+        <div id="resultadoActividad1" class="resultado-mensaje"></div>
+      </div>
     </div>
-    
-    <div class="buttons-group">
-        <button onclick="verificarEncapsulacion()" class="btn-check">Verificar Encapsulación</button>
-        <button onclick="reiniciarEncapsulacion()" class="btn-secondary">Reiniciar Actividad</button>
+
+    <div class="tarjeta">
+      <h2>2.3 Visibilidad en UML</h2>
+      <p>En UML se usan símbolos para indicar qué tan accesible es un atributo o método.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Símbolo</th>
+            <th>Nombre</th>
+            <th>Significado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>+</strong></td>
+            <td>public</td>
+            <td>Puede accederse desde otras clases.</td>
+          </tr>
+          <tr>
+            <td><strong>-</strong></td>
+            <td>private</td>
+            <td>Solo puede usarse dentro de la misma clase.</td>
+          </tr>
+          <tr>
+            <td><strong>#</strong></td>
+            <td>protected</td>
+            <td>Puede usarse en la clase y sus hijas.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div id="resultadoEncapsulacion" class="resultado-mensaje" style="display:none;"></div>
-</section>
-</div>
 
-<div class="tarjeta">
-    <div class="bienvenida-transicion">
-    <h2>¡Felicidades! 🎉 Unidad 1.1 Completada</h2>
-    <h3>1.1 Tipos de datos: variables y operaciones básicas</h3>
-    <p>Acabas de dominar la <strong>declaración de variables</strong> y las <strong>operaciones aritméticas básicas</strong> en Java, ¡los cimientos de cualquier programa!</p>
-    
-    <hr style="width: 50%; margin: 20px auto; border-top: 1px solid #ACBCD5;">
+    <div class="tarjeta activity-section">
+      <h3>Actividad 2: Identifica la visibilidad</h3>
+      <p>Selecciona el significado correcto de cada símbolo UML.</p>
 
-    <h3>🚀 Siguiente Paso: Unidad 1.2 Clases y objetos: atributos, métodos y encapsulación</h3>
-    <p>Ahora estás listo para el concepto central de POO. En la siguiente sección, aprenderás a:</p>
-    <ul>
-        <li><strong>Modelar el mundo real:</strong> Entender la diferencia entre el plano (<strong>Clase</strong>) y la instancia (<strong>Objeto</strong>).</li>
-        <li><strong>Estructura de la Clase:</strong> Definir la estructura con <strong>Atributos</strong> (datos) y <strong>Métodos</strong> (comportamiento).</li>
-        <li><strong>Constructores:</strong> Crear el método especial que se usa para inicializar un objeto.</li>
-        <li><strong>Encapsulación:</strong> Proteger los datos de la clase usando modificadores de acceso (`public` y `private`).</li>
-    </ul>
-</div>
-</div>
+      <div class="quiz-item">
+        <label><strong>1. El símbolo <code>-</code> significa:</strong></label>
+        <select class="preg-u2" data-answer="private">
+          <option value="">Selecciona...</option>
+          <option value="public">public</option>
+          <option value="private">private</option>
+          <option value="protected">protected</option>
+        </select>
+      </div>
 
-    <h2>Conclusión</h2>
-    <p>
-      Las clases son la base de la programación orientada a objetos.  
-      Gracias a ellas podemos <strong>modelar la realidad</strong> en nuestro código, hacer que sea más fácil de entender, mantener y reutilizar.  
-      Piensa en una clase como un plano, y en los objetos como los productos terminados a partir de ese plano.
-    </p>
+      <div class="quiz-item">
+        <label><strong>2. El símbolo <code>+</code> significa:</strong></label>
+        <select class="preg-u2" data-answer="public">
+          <option value="">Selecciona...</option>
+          <option value="public">public</option>
+          <option value="private">private</option>
+          <option value="protected">protected</option>
+        </select>
+      </div>
+
+      <div class="quiz-item">
+        <label><strong>3. El símbolo <code>#</code> significa:</strong></label>
+        <select class="preg-u2" data-answer="protected">
+          <option value="">Selecciona...</option>
+          <option value="public">public</option>
+          <option value="private">private</option>
+          <option value="protected">protected</option>
+        </select>
+      </div>
+
+      <div class="buttons-group">
+        <button id="btnActividad2" class="btn-check">Verificar respuestas</button>
+        <button id="resetActividad2" class="btn-secondary">Reiniciar actividad</button>
+      </div>
+      <div id="resultadoActividad2" class="resultado-mensaje"></div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>2.4 Diagrama de secuencia</h2>
+      <p>El <strong>diagrama de secuencia</strong> muestra cómo interactúan los objetos durante un proceso. A diferencia del diagrama de clases, este se enfoca en el comportamiento y en el orden de los mensajes.</p>
+      <ul>
+        <li><strong>Actor:</strong> persona o sistema que inicia una acción.</li>
+        <li><strong>Objeto:</strong> elemento que participa en la interacción.</li>
+        <li><strong>Línea de vida:</strong> línea vertical que representa la existencia del objeto durante el proceso.</li>
+        <li><strong>Mensaje:</strong> flecha que indica comunicación entre objetos.</li>
+        <li><strong>Foco de control:</strong> rectángulo delgado que indica que el objeto está ejecutando una acción.</li>
+      </ul>
+      <pre><code>Usuario        Sistema        BaseDatos
+   |              |              |
+   |-- login() -->|              |
+   |              |-- buscar() ->|
+   |              |<-- datos() --|
+   |<-- acceso() -|              |</code></pre>
+    </div>
+
+    <div class="tarjeta activity-section">
+      <h3>Actividad 3: Diagrama de secuencia</h3>
+      <p>Contesta las preguntas sobre los elementos de un diagrama de secuencia.</p>
+
+      <div class="quiz-item">
+        <p><strong>1. ¿Qué elemento representa la existencia de un objeto durante el tiempo?</strong></p>
+        <label><input type="radio" name="seq1" value="incorrecto"> Mensaje de retorno</label>
+        <label><input type="radio" name="seq1" value="correcto"> Línea de vida</label>
+        <label><input type="radio" name="seq1" value="incorrecto"> Clase abstracta</label>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>2. ¿Qué elemento indica que un objeto está ejecutando una acción?</strong></p>
+        <label><input type="radio" name="seq2" value="incorrecto"> Nombre de la clase</label>
+        <label><input type="radio" name="seq2" value="incorrecto"> Atributo privado</label>
+        <label><input type="radio" name="seq2" value="correcto"> Foco de control</label>
+      </div>
+
+      <div class="buttons-group">
+        <button onclick="verificarActividad3()" class="btn-check">Verificar respuestas</button>
+        <button onclick="reiniciarActividad3()" class="btn-secondary">Reiniciar actividad</button>
+      </div>
+      <div id="resultadoActividad3" class="resultado-mensaje"></div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>2.5 Relaciones UML</h2>
+      <p>Las relaciones muestran cómo se conectan las clases entre sí. Estas conexiones ayudan a entender la estructura del sistema.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Relación</th>
+            <th>Idea principal</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Asociación</td>
+            <td>Una clase se relaciona con otra.</td>
+            <td>Profesor enseña Materia</td>
+          </tr>
+          <tr>
+            <td>Herencia</td>
+            <td>Una clase hija hereda de una clase padre.</td>
+            <td>Perro hereda de Animal</td>
+          </tr>
+          <tr>
+            <td>Agregación</td>
+            <td>Relación parte-todo débil.</td>
+            <td>Equipo tiene Jugadores</td>
+          </tr>
+          <tr>
+            <td>Composición</td>
+            <td>Relación parte-todo fuerte.</td>
+            <td>Casa tiene Habitaciones</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tarjeta activity-section">
+      <h3>Actividad 4: Relaciona conceptos UML</h3>
+      <p>Elige la relación correcta para cada caso.</p>
+
+      <div class="quiz-item">
+        <label><strong>1. Una clase <code>Perro</code> hereda de <code>Animal</code>:</strong></label>
+        <select class="rel-u2" data-answer="herencia">
+          <option value="">Selecciona...</option>
+          <option value="asociacion">Asociación</option>
+          <option value="herencia">Herencia</option>
+          <option value="composicion">Composición</option>
+        </select>
+      </div>
+
+      <div class="quiz-item">
+        <label><strong>2. Una <code>Casa</code> está formada por <code>Habitaciones</code>:</strong></label>
+        <select class="rel-u2" data-answer="composicion">
+          <option value="">Selecciona...</option>
+          <option value="agregacion">Agregación</option>
+          <option value="herencia">Herencia</option>
+          <option value="composicion">Composición</option>
+        </select>
+      </div>
+
+      <div class="quiz-item">
+        <label><strong>3. Un <code>Profesor</code> enseña una <code>Materia</code>:</strong></label>
+        <select class="rel-u2" data-answer="asociacion">
+          <option value="">Selecciona...</option>
+          <option value="asociacion">Asociación</option>
+          <option value="herencia">Herencia</option>
+          <option value="composicion">Composición</option>
+        </select>
+      </div>
+
+      <div class="buttons-group">
+        <button id="btnActividad4" class="btn-check">Verificar respuestas</button>
+        <button id="resetActividad4" class="btn-secondary">Reiniciar actividad</button>
+      </div>
+      <div id="resultadoActividad4" class="resultado-mensaje"></div>
+    </div>
+
+    <div class="tarjeta activity-section">
+      <h3>Actividad 5: Mini quiz final</h3>
+      <p>Responde el quiz final de la unidad.</p>
+
+      <div class="quiz-item">
+        <p><strong>1. UML sirve principalmente para:</strong></p>
+        <label><input type="radio" name="final1" value="incorrecto"> Decorar una página web</label>
+        <label><input type="radio" name="final1" value="correcto"> Modelar y comunicar el diseño de un sistema</label>
+        <label><input type="radio" name="final1" value="incorrecto"> Reemplazar completamente al código</label>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>2. El diagrama de clases muestra:</strong></p>
+        <label><input type="radio" name="final2" value="correcto"> Clases, atributos, métodos y relaciones</label>
+        <label><input type="radio" name="final2" value="incorrecto"> Solo colores de interfaz</label>
+        <label><input type="radio" name="final2" value="incorrecto"> Únicamente bases de datos</label>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>3. El diagrama de secuencia se enfoca en:</strong></p>
+        <label><input type="radio" name="final3" value="incorrecto"> Los tipos de datos primitivos</label>
+        <label><input type="radio" name="final3" value="correcto"> El orden de mensajes entre objetos</label>
+        <label><input type="radio" name="final3" value="incorrecto"> El diseño gráfico del logo</label>
+      </div>
+
+      <div class="buttons-group">
+        <button onclick="verificarQuizFinal()" class="btn-check">Verificar quiz</button>
+        <button onclick="reiniciarQuizFinal()" class="btn-secondary">Reiniciar quiz</button>
+      </div>
+      <div id="resultadoQuizFinal" class="resultado-mensaje"></div>
+    </div>
+
+    <div class="tarjeta">
+      <div class="bienvenida-transicion">
+        <h2>¡Felicidades! 🎉 Unidad 2 completada</h2>
+        <h3>Modelado y Diseño con UML</h3>
+        <p>Ahora ya conoces los conceptos básicos para planear un sistema antes de programarlo: diagramas de clases, diagramas de secuencia y relaciones UML.</p>
+        <hr style="width: 50%; margin: 20px auto; border-top: 1px solid #ACBCD5;">
+        <h3>🚀 Siguiente paso: Unidad 3</h3>
+        <p>En la siguiente unidad podrás avanzar hacia implementación, pruebas y conceptos más completos de POO.</p>
+      </div>
+    </div>
+
+    <div class="nav-bottom">
+      <a href="clases.html" class="btn-nav">← Volver a Unidad 1</a>
+      <a href="U3.html" id="btn-siguiente-unidad">Ir a Unidad 3 →</a>
+    </div>
+
   </div>
 
   <footer>
-    © 2025 POO Web - Todos los derechos reservados
+    © 2025 POOLINGO - Todos los derechos reservados
   </footer>
 
-  <div id="progress-container"><div id="progress-bar"></div></div>
-
   <script>
-    /* Barra de progreso */
-    window.addEventListener("scroll", () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      document.getElementById("progress-bar").style.width = scrollPercent + "%";
+    function marcarResultado(elemento, correcto, mensajeCorrecto, mensajeIncorrecto) {
+      elemento.style.display = "block";
+      elemento.className = "resultado-mensaje " + (correcto ? "correcto" : "incorrecto");
+      elemento.textContent = correcto ? mensajeCorrecto : mensajeIncorrecto;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      configurarDragActividad1();
+      configurarSelectActividad2();
+      configurarSelectActividad4();
     });
 
-    /* Verificación de relación */
-    function verificarRelacion() {
-      const respuestas = { r1: "c", r2: "a", r3: "a", r4: "b" };
-      let aciertos = 0;
-      let total = Object.keys(respuestas).length;
+    function configurarDragActividad1() {
+      const items = document.querySelectorAll('#actividadU2Drag .drag-item');
+      const zones = document.querySelectorAll('#actividadU2Drag .drop-zone');
+      const btn = document.getElementById('btnActividad1');
+      const reset = document.getElementById('resetActividad1');
+      const resultado = document.getElementById('resultadoActividad1');
+      const contenedor = document.querySelector('#actividadU2Drag .drag-items');
 
-      for (let key in respuestas) {
-        const select = document.getElementById(key);
-        if (select.value === respuestas[key]) aciertos++;
-      }
-
-      const resultado = document.getElementById("resultado");
-      if (aciertos === total) {
-        resultado.style.background = "#C8E6C9";
-        resultado.style.color = "#2E7D32";
-        resultado.textContent = `¡Excelente! Acertaste todas (${aciertos}/${total}) 🎉`;
-      } else {
-        resultado.style.background = "#FFCDD2";
-        resultado.style.color = "#C62828";
-        resultado.textContent = `Obtuviste ${aciertos} de ${total} correctas. Intenta de nuevo.`;
-      }
-    }
-
-    /* Verificación de código */
-    function verificarCodigo() {
-      const respuestas = {
-        v1: "String",
-        v2: "int",
-        v3: "double",
-        v4: "boolean"
-      };
-
-      let aciertos = 0;
-      for (let key in respuestas) {
-        const input = document.getElementById(key);
-        // Usar toLowerCase() para hacer la verificación insensible a mayúsculas/minúsculas
-        if (input.value.trim().toLowerCase() === respuestas[key].toLowerCase()) {
-          aciertos++;
-          input.style.color = "#00bfff"; // azul tipo código si es correcto
-        } else {
-          input.style.color = "#ff66cc"; // rosa si es incorrecto
-        }
-      }
-
-      const resultado = document.getElementById("resultadoCodigo");
-      if (aciertos === Object.keys(respuestas).length) {
-        resultado.style.background = "#C8E6C9";
-        resultado.style.color = "#2E7D32";
-        resultado.innerHTML = `✅ ¡Actividad completada correctamente! (${aciertos}/4)`;
-      } else {
-        resultado.style.background = "#FFCDD2";
-        resultado.style.color = "#C62828";
-        resultado.textContent = `Tienes ${aciertos} de 4 respuestas correctas. Intenta de nuevo.`;
-      }
-    }
-    
-    // =========================================================
-    // Corrección Actividad 1: Arrastra el tipo de dato correcto
-    // =========================================================
-    document.addEventListener('DOMContentLoaded', () => {
-      const items = document.querySelectorAll('.drag-item');
-      // NOTA: Se usa 'drop-zone' para la actividad 1 y la actividad 3. Solo se usa '.drag-container' para la actividad 1.
-      const zones = document.querySelectorAll('.drag-container .drop-zone'); 
-      const checkBtn = document.getElementById('checkButton');
-      const resetBtn = document.getElementById('resetButton');
-      const resultadoFinal = document.getElementById('resultadoFinal');
-
-      if (resultadoFinal) resultadoFinal.style.display = 'none';
-
-      // Drag start: solo para la primera actividad de arrastre
       items.forEach(item => {
         item.addEventListener('dragstart', e => {
           e.dataTransfer.setData('text/plain', item.dataset.type);
         });
       });
 
-      // Zonas: permitir drop y manejar el soltar
       zones.forEach(zone => {
         zone.addEventListener('dragover', e => e.preventDefault());
-
         zone.addEventListener('drop', e => {
           e.preventDefault();
           const type = e.dataTransfer.getData('text/plain');
-          if (!type) return;
-
-          // Se busca el item original para clonar
           const source = Array.from(items).find(i => i.dataset.type === type);
           if (!source) return;
 
-          // Primero, devolver el elemento existente a la paleta si es que hay uno.
           const existing = zone.querySelector('.dropped');
           if (existing) {
-              const originalItem = Array.from(items).find(i => i.dataset.type === existing.dataset.type);
-              if (originalItem) originalItem.style.display = 'block'; // Mostrar el original
-              existing.remove();
+            const original = Array.from(items).find(i => i.dataset.type === existing.dataset.type);
+            if (original) original.style.display = 'block';
+            existing.remove();
           }
 
-          // Ocultar el item original (para que solo se use una vez)
-          source.style.display = 'none'; 
-
-          // Clonar el item y preparar para colocar
+          source.style.display = 'none';
           const clone = source.cloneNode(true);
           clone.classList.remove('drag-item');
           clone.classList.add('dropped');
           clone.setAttribute('draggable', 'false');
           clone.style.cursor = 'default';
           clone.style.display = 'block';
-
           zone.appendChild(clone);
         });
       });
 
-      // Botón Verificar: comprueba cada zona
-      if (checkBtn) {
-        checkBtn.addEventListener('click', () => {
-          let correctas = 0;
-
-          zones.forEach(zone => {
-            const correct = zone.dataset.answer;
-            const placed = zone.querySelector('.dropped');
-
-            zone.classList.remove('correct', 'incorrect');
-
-            if (placed && placed.dataset.type === correct) {
-              zone.classList.add('correct');
-              correctas++;
-            } else {
-              zone.classList.add('incorrect');
-            }
-          });
-
-          if (resultadoFinal) {
-            resultadoFinal.style.display = 'block';
-            if (correctas === zones.length) {
-              resultadoFinal.className = 'correcto';
-              resultadoFinal.textContent = '¡Excelente! Todas las respuestas son correctas 🎉';
-            } else {
-              resultadoFinal.className = 'incorrecto';
-              resultadoFinal.textContent = `Obtuviste ${correctas} de ${zones.length}. ¡Puedes mejorar!`;
-            }
-          }
-        });
-      }
-
-      // Botón Reiniciar: borra colocados y resetea estados
-      if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-          zones.forEach(zone => {
-            const existing = zone.querySelector('.dropped');
-            if (existing) {
-                const originalItem = Array.from(items).find(i => i.dataset.type === existing.dataset.type);
-                if (originalItem) originalItem.style.display = 'block'; // Mostrar el original
-                existing.remove();
-            }
-            zone.classList.remove('correct', 'incorrect');
-          });
-          if (resultadoFinal) {
-            resultadoFinal.style.display = 'none';
-            resultadoFinal.className = '';
-            resultadoFinal.textContent = '';
-          }
-        });
-      }
-    });
-
-    // =========================================================
-    // Actividad 2: Identifica el tipo de dato (SELECT)
-    // =========================================================
-    document.addEventListener("DOMContentLoaded", () => {
-      const selects = document.querySelectorAll(".preg");
-      const btnVerificar = document.getElementById("checkActividadSimple");
-      const btnReset = document.getElementById("resetActividadSimple");
-      const resultado = document.getElementById("resultadoActividadSimple");
-
-      // Verificar respuestas
-      btnVerificar.addEventListener("click", () => {
+      btn.addEventListener('click', () => {
         let correctas = 0;
-
-        selects.forEach(sel => {
-          const correcta = sel.dataset.answer;
-          const respuesta = sel.value;
-
-          sel.style.border = "2px solid transparent";
-
-          if (respuesta === correcta) {
-            sel.style.borderColor = "#4CAF50"; // verde
+        zones.forEach(zone => {
+          const placed = zone.querySelector('.dropped');
+          zone.classList.remove('correct', 'incorrect');
+          if (placed && placed.dataset.type === zone.dataset.answer) {
             correctas++;
+            zone.classList.add('correct');
           } else {
-            sel.style.borderColor = "#E53935"; // rojo
+            zone.classList.add('incorrect');
           }
         });
 
-        resultado.style.display = "block";
+        if (correctas === zones.length) {
+          guardarProgreso("unidad2_elementos_clase", 20);
+          marcarResultado(resultado, true, "🎉 ¡Excelente! Identificaste correctamente clase, atributo y método.", "");
+        } else {
+          marcarResultado(resultado, false, "", `Obtuviste ${correctas} de ${zones.length}. Intenta de nuevo.`);
+        }
+      });
+
+      reset.addEventListener('click', () => {
+        zones.forEach(zone => {
+          const existing = zone.querySelector('.dropped');
+          if (existing) existing.remove();
+          zone.classList.remove('correct', 'incorrect');
+        });
+        items.forEach(item => {
+          item.style.display = 'block';
+          contenedor.appendChild(item);
+        });
+        resultado.style.display = 'none';
+        resultado.textContent = '';
+      });
+    }
+
+    function configurarSelectActividad2() {
+      const selects = document.querySelectorAll('.preg-u2');
+      const btn = document.getElementById('btnActividad2');
+      const reset = document.getElementById('resetActividad2');
+      const resultado = document.getElementById('resultadoActividad2');
+
+      btn.addEventListener('click', () => {
+        let correctas = 0;
+        selects.forEach(sel => {
+          sel.style.borderColor = '#ccc';
+          if (sel.value === sel.dataset.answer) {
+            correctas++;
+            sel.style.borderColor = '#4CAF50';
+          } else {
+            sel.style.borderColor = '#E53935';
+          }
+        });
 
         if (correctas === selects.length) {
-          resultado.style.background = "#C8E6C9";
-          resultado.style.color = "#2E7D32";
-          resultado.textContent = "¡Excelente! Todas están correctas 🎉";
+          guardarProgreso("unidad2_visibilidad_uml", 20);
+          marcarResultado(resultado, true, "✅ ¡Correcto! Dominas los símbolos de visibilidad UML.", "");
         } else {
-          resultado.style.background = "#FFCDD2";
-          resultado.style.color = "#C62828";
-          resultado.textContent = `Obtuviste ${correctas} de ${selects.length}. ¡Sigue practicando!`;
+          marcarResultado(resultado, false, "", `Tienes ${correctas} de ${selects.length}. Revisa la tabla de visibilidad.`);
         }
       });
 
-      // Reiniciar actividad
-      btnReset.addEventListener("click", () => {
+      reset.addEventListener('click', () => {
         selects.forEach(sel => {
-          sel.value = "";
-          sel.style.border = "2px solid transparent";
+          sel.value = '';
+          sel.style.borderColor = '#ccc';
         });
-
-        resultado.style.display = "none";
-        resultado.textContent = "";
+        resultado.style.display = 'none';
+        resultado.textContent = '';
       });
-    });
+    }
 
-    // =========================================================
-    // Actividad 3: Declara correctamente las variables (BLOQUES) - CORREGIDA Y ALEATORIZADA
-    // =========================================================
-    document.addEventListener("DOMContentLoaded", () => {
+    function verificarActividad3() {
+      const respuestas = ['seq1', 'seq2'];
+      let aciertos = 0;
+      const resultado = document.getElementById('resultadoActividad3');
 
-        let dragged = null;
-        const bloquesContainer = document.getElementById('bloques-container');
-        const zonasDrop = document.querySelectorAll('.drag-actividad .drop-zone');
-        const verificarBtn = document.getElementById("verificar-btn");
-        const resetDragBtn = document.getElementById("reset-drag-btn");
-        const resultadoMensaje = document.getElementById("resultado-final");
-        
-        // ➡️ FUNCIÓN PARA MEZCLAR LOS BLOQUES (SHUFFLE) 🎲
-        function shuffleBloques() {
-            // 1. Obtener todos los bloques como un array
-            const bloques = Array.from(bloquesContainer.children);
+      respuestas.forEach(nombre => {
+        const seleccionado = document.querySelector(`input[name="${nombre}"]:checked`);
+        if (seleccionado && seleccionado.value === 'correcto') aciertos++;
+      });
 
-            // 2. Algoritmo de Fisher-Yates para mezclar
-            for (let i = bloques.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                // Intercambiar elementos: inserta el elemento 'i' antes del elemento 'j'
-                bloquesContainer.insertBefore(bloques[i], bloques[j]);
-            }
-        }
-        
-        // ➡️ LLAMAR A LA FUNCIÓN AL CARGAR LA PÁGINA
-        shuffleBloques(); 
+      if (aciertos === respuestas.length) {
+        guardarProgreso("unidad2_diagrama_secuencia", 20);
+        marcarResultado(resultado, true, "✅ ¡Muy bien! Comprendiste los elementos del diagrama de secuencia.", "");
+      } else {
+        marcarResultado(resultado, false, "", `Tienes ${aciertos} de ${respuestas.length}. Intenta de nuevo.`);
+      }
+    }
 
-        // 1. Configurar DRAGSTART para todos los bloques
-        function setupDragStart(bloque) {
-            bloque.addEventListener('dragstart', e => {
-                dragged = bloque;
-                e.dataTransfer.setData("text/html", bloque.outerHTML); 
-                // Ocultar el bloque de forma asíncrona para que el arrastre sea limpio
-                setTimeout(() => bloque.style.display = "none", 0); 
-            });
+    function reiniciarActividad3() {
+      document.querySelectorAll('input[name="seq1"], input[name="seq2"]').forEach(r => r.checked = false);
+      const resultado = document.getElementById('resultadoActividad3');
+      resultado.style.display = 'none';
+      resultado.textContent = '';
+    }
 
-            bloque.addEventListener('dragend', () => {
-                // Si el bloque sigue 'oculto' después de arrastrar, significa que no se soltó en una zona válida
-                if (dragged && dragged.style.display === "none" && !dragged.parentNode.classList.contains('drop-zone') && dragged.parentNode.id !== 'bloques-container') {
-                    dragged.style.display = "block"; // Regresar al origen si no se soltó correctamente
-                }
-                dragged = null;
-            });
-        }
+    function configurarSelectActividad4() {
+      const selects = document.querySelectorAll('.rel-u2');
+      const btn = document.getElementById('btnActividad4');
+      const reset = document.getElementById('resetActividad4');
+      const resultado = document.getElementById('resultadoActividad4');
 
-        // Aplicar a todos los bloques iniciales (ahora revueltos)
-        document.querySelectorAll('.bloque').forEach(setupDragStart);
-
-        // 2. Configurar DROP para las zonas y el contenedor de bloques
-        [...zonasDrop, bloquesContainer].forEach(zone => {
-            zone.addEventListener('dragover', e => e.preventDefault());
-
-            zone.addEventListener('drop', e => {
-                e.preventDefault();
-                if (dragged) {
-                    // Mover el bloque al nuevo contenedor
-                    dragged.style.display = "block"; 
-                    e.currentTarget.appendChild(dragged);
-                    dragged = null; 
-                }
-            });
+      btn.addEventListener('click', () => {
+        let correctas = 0;
+        selects.forEach(sel => {
+          sel.style.borderColor = '#ccc';
+          if (sel.value === sel.dataset.answer) {
+            correctas++;
+            sel.style.borderColor = '#4CAF50';
+          } else {
+            sel.style.borderColor = '#E53935';
+          }
         });
 
-        // 3. Verificación
-        if (verificarBtn) {
-            verificarBtn.addEventListener("click", () => {
-                let totalCorrectas = 0;
-
-                zonasDrop.forEach(zone => {
-                    // La declaración correcta del HTML sin espacios para comparación estricta
-                    const correctoSinEspacios = zone.dataset.correct.replace(/\s/g, '').trim(); 
-
-                    // Obtener valor de todos los bloques en la línea, unidos sin espacios
-                    const armado = [...zone.children]
-                        .map(x => x.dataset.value)
-                        .join("").trim(); 
-
-                    zone.style.background = "#FFEBEE"; // Predeterminado a rojo
-                    zone.style.borderColor = "#C62828";
-
-                    // Comparación estricta
-                    if (armado === correctoSinEspacios) {
-                        totalCorrectas++;
-                        zone.style.background = "#E8F5E9"; // verde claro
-                        zone.style.borderColor = "#2E7D32";
-                    }
-                });
-
-                // Mensaje final
-                if (totalCorrectas === zonasDrop.length) {
-                    resultadoMensaje.innerHTML = "🎉 ¡Excelente! Todas las declaraciones son correctas.";
-                    resultadoMensaje.style.color = "#2E7D32";
-                } else {
-                    resultadoMensaje.innerHTML = `❌ Hay errores. Declaraciones correctas: ${totalCorrectas}/${zonasDrop.length}`;
-                    resultadoMensaje.style.color = "#C62828";
-                }
-            });
-        }
-
-        // 4. Botón Reiniciar
-        if (resetDragBtn) {
-            resetDragBtn.addEventListener('click', () => {
-                zonasDrop.forEach(zone => {
-                    // Mueve todos los bloques de la zona de vuelta al contenedor de bloques
-                    while (zone.firstChild) {
-                        bloquesContainer.appendChild(zone.firstChild);
-                    }
-                    zone.style.background = "#ffffff";
-                    zone.style.borderColor = "#4CAF50";
-                });
-                resultadoMensaje.innerHTML = "";
-                resultadoMensaje.style.color = "";
-                // Asegurarse de que todos los bloques estén visibles en el contenedor
-                document.querySelectorAll('.bloque').forEach(b => b.style.display = "block");
-                
-                // ➡️ REVOLVER LOS BLOQUES DE NUEVO AL REINICIAR
-                shuffleBloques(); 
-            });
-        }
-    });
-    /* Verificación de declaraciones aritméticas (Actividad 4) */
-function verificarDeclaracionesAritmeticas() {
-    // IDs de los campos de la Actividad 4
-    const ids = ["op_suma", "op_resta", "op_mult", "op_div_int", "op_mod", "op_div_double"];
-    let aciertos = 0;
-    const total = ids.length;
-    const resultadoDiv = document.getElementById("resultadoOperaciones");
-
-    // Función auxiliar para normalizar la cadena (quitar espacios y forzar minúsculas)
-    const normalizar = (str) => str.replace(/\s/g, '').toLowerCase();
-
-    ids.forEach(id => {
-        const input = document.getElementById(id);
-        const valorUsuario = normalizar(input.value.trim());
-        const valorCorrecto = normalizar(input.dataset.correct); // Esto lee el valor sin espacios del HTML
-        
-        input.style.border = "2px solid #ccc"; // Resetear
-
-        // Comparamos las cadenas normalizadas
-        if (valorUsuario === valorCorrecto) {
-            aciertos++;
-            input.style.borderColor = "#4CAF50"; // Verde
+        if (correctas === selects.length) {
+          guardarProgreso("unidad2_relaciones_uml", 20);
+          marcarResultado(resultado, true, "🎉 ¡Perfecto! Reconoces las relaciones UML principales.", "");
         } else {
-            input.style.borderColor = "#E53935"; // Rojo
+          marcarResultado(resultado, false, "", `Tienes ${correctas} de ${selects.length}. Revisa asociación, herencia y composición.`);
         }
-    });
+      });
 
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Felicidades! Todas las declaraciones son correctas (${aciertos}/${total}).`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} declaraciones correctas. ¡Revisa la sintaxis (int, double, =, ;)!`;
-    }
-}
-/* Verificación de Actividad 6: Instanciación de Objetos - VERSIÓN CORREGIDA Y ROBUSTA */
-function verificarInstanciacion() {
-    const ids = ["inst_p1", "inst_p2", "inst_p3"];
-    let aciertos = 0;
-    const total = ids.length;
-    const resultadoDiv = document.getElementById("resultadoInstanciacion");
-
-    // Función auxiliar: Normaliza la cadena quitando espacios, punto y coma y forzando minúsculas.
-    const normalizar = (str) => {
-        return str.replace(/\s/g, '') // Elimina todos los espacios
-                  .replace(/;/g, '') // Elimina todos los punto y coma
-                  .toLowerCase();    // Fuerza minúsculas
-    };
-
-    ids.forEach(id => {
-        const input = document.getElementById(id);
-        
-        // 1. Tomamos el valor limpio (sin espacios ni ; y en minúsculas) de data-correct
-        const valorCorrecto = input.dataset.correct; 
-
-        // 2. Normalizamos lo que el usuario escribió
-        const valorUsuarioNormalizado = normalizar(input.value.trim()); 
-        
-        input.style.border = "2px solid #ccc"; // Resetear
-
-        // 3. Comparamos
-        if (valorUsuarioNormalizado === valorCorrecto) {
-            aciertos++;
-            input.style.borderColor = "#4CAF50"; // Verde
-        } else {
-            input.style.borderColor = "#E53935"; // Rojo
-        }
-    });
-
-    resultadoDiv.style.display = "block";
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Excelente! Has instanciado todos los objetos correctamente (${aciertos}/${total}).`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} objetos creados. ¡Revisa tu sintaxis!`;
-    }
-}
-// La función normalizarActividad debe estar disponible (ya la definimos en pasos anteriores)
-/* Función auxiliar de normalización (la misma que usamos antes) */
-const normalizarActividad = (str) => {
-    return str.replace(/\s/g, '')     // Elimina todos los espacios
-              .replace(/;/g, '')     // Elimina todos los punto y coma
-              .replace(/"/g, '')     // Elimina las comillas dobles
-              .replace(/'/g, '')     // Elimina las comillas simples
-              .toLowerCase();        // Fuerza minúsculas
-};
-
-/* Verificación de Actividad 8: Definición y Uso de Constructores - CORREGIDA */
-function verificarDefinicionConstructores() {
-    const ids = ["cons_p1", "cons_p2", "cons_p3"];
-    let aciertos = 0;
-    const total = ids.length;
-    const resultadoDiv = document.getElementById("resultadoDefinicionConstructores");
-    
-    // --- Validación Pregunta 1 (Constructor) ---
-    const input1 = document.getElementById(ids[0]);
-    let valorUsuario1 = input1.value.trim();
-
-    // Normalización especial para P1: Quitamos modificadores, llaves, paréntesis y this. para buscar las piezas clave.
-    let valorLimpio1 = normalizarActividad(valorUsuario1)
-        .replace(/public|private|void/g, '') 
-        .replace(/\{/g, '').replace(/\}/g, '')
-        .replace(/\(/g, ' ').replace(/\)/g, ' ')
-        .replace(/this\./g, '');
-
-    // Palabras clave requeridas para el constructor
-    // Usamos 'includes' para que el orden o los espacios no sean un problema.
-    const palabrasClave1 = ["coche", "string", "marca", "int", "anio", "=marca", "=anio"];
-    const cumpleP1 = palabrasClave1.every(keyword => valorLimpio1.includes(keyword));
-
-    if (cumpleP1) {
-        aciertos++;
-        input1.style.borderColor = "#4CAF50"; 
-    } else {
-        input1.style.borderColor = "#E53935"; 
+      reset.addEventListener('click', () => {
+        selects.forEach(sel => {
+          sel.value = '';
+          sel.style.borderColor = '#ccc';
+        });
+        resultado.style.display = 'none';
+        resultado.textContent = '';
+      });
     }
 
-    // --- Validación Preguntas 2 y 3 (Instanciación) ---
-    const inst_ids = [ids[1], ids[2]];
-    const correct_vals = [
-        "cochemiauto=newcoche(toyota,2024)", // P2
-        "cocheautofamiliar=newcoche(kia,2025)" // P3
-    ];
+    function verificarQuizFinal() {
+      const preguntas = ['final1', 'final2', 'final3'];
+      let aciertos = 0;
+      const resultado = document.getElementById('resultadoQuizFinal');
 
-    inst_ids.forEach((id, index) => {
-        const input = document.getElementById(id);
-        const valorUsuario = normalizarActividad(input.value.trim()); 
-        
-        if (valorUsuario === correct_vals[index]) {
-            aciertos++;
-            input.style.borderColor = "#4CAF50"; 
-        } else {
-            input.style.borderColor = "#E53935";
-        }
-    });
+      preguntas.forEach(nombre => {
+        const seleccionado = document.querySelector(`input[name="${nombre}"]:checked`);
+        if (seleccionado && seleccionado.value === 'correcto') aciertos++;
+      });
 
-    // --- Mostrar Resultado ---
-    resultadoDiv.style.display = "block";
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Trabajo completo! Has definido el constructor y creado ambos objetos correctamente (${aciertos}/${total}).`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} partes correctas. ¡Revisa tu sintaxis! (Pista: La línea 1 debe contener 'Coche(String marca, int anio)' y las asignaciones con 'this').`;
-    }
-}
-
-
-/* Función para reiniciar Actividad 8 (sin cambios) */
-function reiniciarDefinicionConstructores() {
-    const ids = ["cons_p1", "cons_p2", "cons_p3"];
-    const resultadoDiv = document.getElementById("resultadoDefinicionConstructores");
-
-    ids.forEach(id => {
-        const input = document.getElementById(id);
-        input.value = ""; 
-        input.style.borderColor = "#ccc"; 
-        input.style.borderWidth = "2px"; 
-    });
-
-    // Limpiar y ocultar el mensaje de resultado
-    resultadoDiv.textContent = ""; 
-    resultadoDiv.style.background = "none";
-    resultadoDiv.style.color = "#333";
-    resultadoDiv.style.display = "none";
-}
-/* Verificación de Actividad 9: Definición y Uso de Constructores (Parte 2) */
-function verificarDefinicionConstructores2() {
-    const ids = ["cons2_p1", "cons2_p2", "cons2_p3"];
-    let aciertos = 0;
-    const total = ids.length;
-    const resultadoDiv = document.getElementById("resultadoDefinicionConstructores2");
-    
-    // --- Validación Pregunta 1 (Constructor Estudiante) ---
-    const input1 = document.getElementById(ids[0]);
-    let valorUsuario1 = input1.value.trim();
-
-    // Normalización especial para P1
-    let valorLimpio1 = normalizarActividad(valorUsuario1)
-        .replace(/public|private|void/g, '') 
-        .replace(/\{/g, '').replace(/\}/g, '')
-        .replace(/\(/g, ' ').replace(/\)/g, ' ')
-        .replace(/this\./g, '');
-
-    // Palabras clave requeridas para el constructor Estudiante
-    const palabrasClave1 = ["estudiante", "string", "nombre", "double", "promedio", "=nombre", "=promedio"];
-    const cumpleP1 = palabrasClave1.every(keyword => valorLimpio1.includes(keyword));
-
-    if (cumpleP1) {
-        aciertos++;
-        input1.style.borderColor = "#4CAF50"; 
-    } else {
-        input1.style.borderColor = "#E53935"; 
+      if (aciertos === preguntas.length) {
+        guardarProgreso("unidad2_quiz_final", 20);
+        marcarResultado(resultado, true, "🏆 ¡Unidad 2 completada! Has ganado los puntos del quiz final.", "");
+      } else {
+        marcarResultado(resultado, false, "", `Tienes ${aciertos} de ${preguntas.length}. Revisa los conceptos clave y vuelve a intentar.`);
+      }
     }
 
-    // --- Validación Preguntas 2 y 3 (Instanciación Estudiante) ---
-    const inst_ids = [ids[1], ids[2]];
-    const correct_vals = [
-        "estudiantemiestudiante=newestudiante(ana,9.5)", // P2
-        "estudiantenuevoingreso=newestudiante(luis,8.2)" // P3
-    ];
-
-    inst_ids.forEach((id, index) => {
-        const input = document.getElementById(id);
-        const valorUsuario = normalizarActividad(input.value.trim()); 
-        
-        if (valorUsuario === correct_vals[index]) {
-            aciertos++;
-            input.style.borderColor = "#4CAF50"; 
-        } else {
-            input.style.borderColor = "#E53935";
-        }
-    });
-
-    // --- Mostrar Resultado ---
-    resultadoDiv.style.display = "block";
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Trabajo completo! Has definido el constructor y creado ambos objetos correctamente (${aciertos}/${total}).`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} partes correctas. ¡Revisa tu sintaxis para el Estudiante!`;
+    function reiniciarQuizFinal() {
+      document.querySelectorAll('input[name="final1"], input[name="final2"], input[name="final3"]').forEach(r => r.checked = false);
+      const resultado = document.getElementById('resultadoQuizFinal');
+      resultado.style.display = 'none';
+      resultado.textContent = '';
     }
-}
+  </script>
 
-
-/* Función para reiniciar Actividad 9 */
-function reiniciarDefinicionConstructores2() {
-    const ids = ["cons2_p1", "cons2_p2", "cons2_p3"];
-    const resultadoDiv = document.getElementById("resultadoDefinicionConstructores2");
-
-    ids.forEach(id => {
-        const input = document.getElementById(id);
-        input.value = ""; 
-        input.style.borderColor = "#ccc"; 
-        input.style.borderWidth = "2px"; 
-    });
-
-    // Limpiar y ocultar el mensaje de resultado
-    resultadoDiv.textContent = ""; 
-    resultadoDiv.style.background = "none";
-    resultadoDiv.style.color = "#333";
-    resultadoDiv.style.display = "none";
-}
-
-/* Verificación de Actividad 10: Clasificación Atributo/Método */
-function verificarClasificacion() {
-    const respuestasCorrectas = {
-        "classif_p1": "atributo", // String nombre
-        "classif_p2": "atributo", // int edad
-        "classif_p3": "metodo",   // Constructor
-        "classif_p4": "metodo",   // void comer()
-        "classif_p5": "metodo"    // int getEdad()
-    };
-
-    let aciertos = 0;
-    const total = Object.keys(respuestasCorrectas).length;
-    const resultadoDiv = document.getElementById("resultadoClasificacion");
-
-    Object.keys(respuestasCorrectas).forEach(id => {
-        const select = document.getElementById(id);
-        const valorUsuario = select.value;
-        const valorCorrecto = respuestasCorrectas[id];
-        
-        select.style.border = "2px solid #ccc"; // Resetear
-
-        if (valorUsuario === valorCorrecto) {
-            aciertos++;
-            select.style.borderColor = "#4CAF50"; // Verde
-            select.style.backgroundColor = "#E8F5E9";
-        } else {
-            select.style.borderColor = "#E53935"; // Rojo
-            select.style.backgroundColor = "#FFEBEE";
-        }
-    });
-
-    // --- Mostrar Resultado ---
-    resultadoDiv.style.display = "block";
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Clasificación Perfecta! Has identificado correctamente los ${total} elementos.`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} correctos. Recuerda: los Atributos son datos, los Métodos son acciones o funciones (incluido el Constructor y los Getters/Setters).`;
-    }
-}
-
-
-/* Función para reiniciar Actividad 10 */
-function reiniciarClasificacion() {
-    const ids = ["classif_p1", "classif_p2", "classif_p3", "classif_p4", "classif_p5"];
-    const resultadoDiv = document.getElementById("resultadoClasificacion");
-
-    ids.forEach(id => {
-        const select = document.getElementById(id);
-        select.value = ""; // Restablecer a la opción por defecto
-        select.style.borderColor = "#ccc"; // Resetear el color del borde a gris
-        select.style.backgroundColor = "white"; 
-    });
-
-    // Limpiar y ocultar el mensaje de resultado
-    resultadoDiv.textContent = ""; 
-    resultadoDiv.style.background = "none";
-    resultadoDiv.style.color = "#333";
-    resultadoDiv.style.display = "none";
-} 
-/* Verificación de Actividad 11: Implementando Encapsulación - VERSIÓN ULTRA-ROBUSTA */
-function verificarEncapsulacion() {
-    const ids = ["encap_p1", "encap_p2", "encap_p3"];
-    let aciertos = 0;
-    const total = ids.length;
-    const resultadoDiv = document.getElementById("resultadoEncapsulacion");
-
-    ids.forEach(id => {
-        const input = document.getElementById(id);
-        
-        // 1. Limpieza y Normalización Avanzada (remueve this., llaves, etc.)
-        let valorUsuarioLimpio = normalizarActividad(input.value.trim())
-                                     .replace(/\{/g, '')
-                                     .replace(/\}/g, '')
-                                     .replace(/this\./g, '');
-        
-        input.style.border = "2px solid #ccc"; 
-        let isCorrect = false;
-
-        // --- P1: Atributo (private String nombre) ---
-        if (id === "encap_p1") {
-            const palabrasClave = ["private", "string", "nombre"];
-            isCorrect = palabrasClave.every(keyword => valorUsuarioLimpio.includes(keyword));
-        } 
-        
-        // --- P2: Setter (public void setNombre(String param) { this.nombre = param; }) ---
-        else if (id === "encap_p2") {
-            // Chequeo de la firma: public, void, setNombre, String
-            const headerKey = ["public", "void", "setnombre", "string"];
-            const headerMatch = headerKey.every(keyword => valorUsuarioLimpio.includes(keyword));
-
-            // Chequeo de la asignación: La cadena debe contener 'nombre=' (el atributo siendo asignado)
-            const assignmentMatch = valorUsuarioLimpio.includes("nombre="); 
-            
-            isCorrect = headerMatch && assignmentMatch;
-        } 
-        
-        // --- P3: Getter (public String getNombre() { return this.nombre; }) ---
-        else if (id === "encap_p3") {
-            const palabrasClave = ["public", "string", "getnombre", "return", "nombre"];
-            isCorrect = palabrasClave.every(keyword => valorUsuarioLimpio.includes(keyword));
-        }
-
-        if (isCorrect) {
-            aciertos++;
-            input.style.borderColor = "#4CAF50"; 
-        } else {
-            input.style.borderColor = "#E53935"; 
-        }
-    });
-
-    // --- Mostrar Resultado ---
-    resultadoDiv.style.display = "block";
-    if (aciertos === total) {
-        resultadoDiv.style.background = "#C8E6C9";
-        resultadoDiv.style.color = "#2E7D32";
-        resultadoDiv.textContent = `✅ ¡Felicidades! Atributo oculto y métodos de acceso públicos creados correctamente (${aciertos}/${total}).`;
-    } else {
-        resultadoDiv.style.background = "#FFCDD2";
-        resultadoDiv.style.color = "#C62828";
-        resultadoDiv.textContent = `Tienes ${aciertos} de ${total} partes correctas. ¡Revisa tu sintaxis! El atributo es private y los métodos son public.`;
-    }
-}
-</script>
+  <script src="auth.js"></script>
+  <script>PoolingoAuth.requireSession();</script>
+  <script type="module" src="pagina/firebase.js"></script>
+  <script src="mobile-drag.js"></script>
+  <script src="progreso.js"></script>
 </body>
 </html>
